@@ -1,0 +1,692 @@
+@import 'tailwindcss';
+
+@import 'tw-animate-css';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-sans:
+        Instrument Sans, ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Noto Color Emoji';
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--sidebar-background);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+@layer utilities {
+    body,
+    html {
+        --font-sans:
+            'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+            'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+            'Noto Color Emoji';
+    }
+}
+
+:root {
+    --background: hsl(0 0% 100%);
+    --foreground: hsl(0 0% 3.9%);
+    --card: hsl(0 0% 100%);
+    --card-foreground: hsl(0 0% 3.9%);
+    --popover: hsl(0 0% 100%);
+    --popover-foreground: hsl(0 0% 3.9%);
+    --primary: hsl(0 0% 9%);
+    --primary-foreground: hsl(0 0% 98%);
+    --secondary: hsl(0 0% 92.1%);
+    --secondary-foreground: hsl(0 0% 9%);
+    --muted: hsl(0 0% 96.1%);
+    --muted-foreground: hsl(0 0% 45.1%);
+    --accent: hsl(0 0% 96.1%);
+    --accent-foreground: hsl(0 0% 9%);
+    --destructive: hsl(0 84.2% 60.2%);
+    --destructive-foreground: hsl(0 0% 98%);
+    --border: hsl(0 0% 92.8%);
+    --input: hsl(0 0% 89.8%);
+    --ring: hsl(0 0% 3.9%);
+    --chart-1: hsl(12 76% 61%);
+    --chart-2: hsl(173 58% 39%);
+    --chart-3: hsl(197 37% 24%);
+    --chart-4: hsl(43 74% 66%);
+    --chart-5: hsl(27 87% 67%);
+    --radius: 0.5rem;
+    --sidebar-background: hsl(0 0% 98%);
+    --sidebar-foreground: hsl(240 5.3% 26.1%);
+    --sidebar-primary: hsl(0 0% 10%);
+    --sidebar-primary-foreground: hsl(0 0% 98%);
+    --sidebar-accent: hsl(0 0% 94%);
+    --sidebar-accent-foreground: hsl(0 0% 30%);
+    --sidebar-border: hsl(0 0% 91%);
+    --sidebar-ring: hsl(217.2 91.2% 59.8%);
+    --sidebar: hsl(0 0% 98%);
+}
+
+/* NOTA: La clase .dark base se define aquí pero será SOBRESCRITA por los temas específicos */
+.dark {
+    --background: hsl(0 0% 3.9%);
+    --foreground: hsl(0 0% 98%);
+    --card: hsl(0 0% 3.9%);
+    --card-foreground: hsl(0 0% 98%);
+    --popover: hsl(0 0% 3.9%);
+    --popover-foreground: hsl(0 0% 98%);
+    --primary: hsl(0 0% 98%);
+    --primary-foreground: hsl(0 0% 9%);
+    --secondary: hsl(0 0% 14.9%);
+    --secondary-foreground: hsl(0 0% 98%);
+    --muted: hsl(0 0% 16.08%);
+    --muted-foreground: hsl(0 0% 63.9%);
+    --accent: hsl(0 0% 14.9%);
+    --accent-foreground: hsl(0 0% 98%);
+    --destructive: hsl(0 84% 60%);
+    --destructive-foreground: hsl(0 0% 98%);
+    --border: hsl(0 0% 14.9%);
+    --input: hsl(0 0% 14.9%);
+    --ring: hsl(0 0% 83.1%);
+    --chart-1: hsl(220 70% 50%);
+    --chart-2: hsl(160 60% 45%);
+    --chart-3: hsl(30 80% 55%);
+    --chart-4: hsl(280 65% 60%);
+    --chart-5: hsl(340 75% 55%);
+    --sidebar-background: hsl(0 0% 7%);
+    --sidebar-foreground: hsl(0 0% 95.9%);
+    --sidebar-primary: hsl(360, 100%, 100%);
+    --sidebar-primary-foreground: hsl(0 0% 100%);
+    --sidebar-accent: hsl(0 0% 15.9%);
+    --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
+    --sidebar-border: hsl(0 0% 15.9%);
+    --sidebar-ring: hsl(217.2 91.2% 59.8%);
+    --sidebar: hsl(240 5.9% 10%);
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+    
+    /* Forzar colores de texto en modo oscuro */
+    .dark {
+        color-scheme: dark;
+    }
+    
+    .dark * {
+        border-color: hsl(var(--border));
+    }
+    
+    .dark h1,
+    .dark h2,
+    .dark h3,
+    .dark h4,
+    .dark h5,
+    .dark h6,
+    .dark p,
+    .dark span,
+    .dark label,
+    .dark div {
+        color: hsl(var(--foreground));
+    }
+    
+    .dark [class*="text-gray"] {
+        color: hsl(var(--muted-foreground)) !important;
+    }
+}
+
+/* ==============================================
+   TEMA INFANTIL (Kids) - Mayor especificidad
+   ============================================== */
+html.theme-kids,
+html.theme-kids.light {
+    /* Colores vibrantes y alegres - ROSADO Y MORADO */
+    --primary: 320 85% 55%; /* Rosa fucsia vibrante */
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 45 100% 60%; /* Amarillo brillante */
+    --secondary-foreground: 280 10% 10%;
+    
+    --accent: 160 80% 50%; /* Verde menta brillante */
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 90% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 320 60% 75%;
+    --input: 320 45% 92%;
+    --ring: 320 85% 55%;
+    
+    /* Fondos ROSADOS vibrantes */
+    --background: 320 70% 95%; /* Fondo rosa claro */
+    --foreground: 280 80% 20%; /* Texto morado oscuro */
+    
+    --card: 320 80% 98%; /* Tarjetas rosa muy claro */
+    --card-foreground: 280 75% 25%; /* Texto morado en tarjetas */
+    
+    --popover: 45 100% 95%; /* Popover amarillo pastel */
+    --popover-foreground: 280 75% 20%;
+    
+    --muted: 320 50% 88%; /* Rosa pálido para muted */
+    --muted-foreground: 280 60% 35%; /* Morado medio */
+    
+    /* Sidebar con tema rosa INTENSO */
+    --sidebar-background: 320 75% 88%; /* Rosa más intenso */
+    --sidebar-foreground: 280 80% 15%; /* Morado muy oscuro */
+    --sidebar-primary: 320 90% 50%; /* Rosa fucsia profundo */
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 45 100% 85%; /* Amarillo pastel para hover */
+    --sidebar-accent-foreground: 280 80% 15%;
+    --sidebar-border: 320 70% 75%;
+    --sidebar-ring: 320 85% 55%;
+    --sidebar: 320 75% 88%;
+    
+    /* Fuente redondeada y juguetona */
+    --font-sans: 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', cursive, sans-serif;
+    
+    /* Bordes muy redondeados */
+    --radius: 1.25rem;
+}
+
+html.theme-kids.dark {
+    --primary: 320 85% 70%; /* Rosa neón brillante */
+    --primary-foreground: 280 70% 10%;
+    
+    --secondary: 45 100% 65%;
+    --secondary-foreground: 280 10% 10%;
+    
+    --accent: 160 80% 65%;
+    --accent-foreground: 280 70% 10%;
+    
+    /* Fondo MORADO oscuro vibrante */
+    --background: 280 45% 15%; /* Morado oscuro */
+    --foreground: 320 90% 95%; /* Rosa muy claro */
+    
+    --card: 280 40% 20%; /* Tarjetas morado medio */
+    --card-foreground: 320 80% 90%; /* Texto rosa claro */
+    
+    --popover: 280 40% 22%;
+    --popover-foreground: 320 80% 90%;
+    
+    --muted: 280 35% 25%; /* Morado medio para muted */
+    --muted-foreground: 320 60% 80%; /* Rosa pálido */
+    
+    --border: 280 40% 35%; /* Bordes morado medio */
+    --input: 280 35% 30%;
+    
+    /* Sidebar MORADO intenso */
+    --sidebar-background: 280 50% 12%; /* Morado profundo */
+    --sidebar-foreground: 320 90% 92%; /* Rosa muy claro */
+    --sidebar-primary: 320 90% 65%; /* Rosa neón */
+    --sidebar-primary-foreground: 280 70% 10%;
+    --sidebar-accent: 280 45% 18%; /* Morado medio para hover */
+    --sidebar-accent-foreground: 320 85% 88%;
+    --sidebar-border: 280 45% 25%;
+    --sidebar-ring: 320 80% 65%;
+    --sidebar: 280 50% 12%;
+}
+
+/* ==============================================
+   TEMA JUVENIL (Youth) - Mayor especificidad
+   ============================================== */
+html.theme-youth,
+html.theme-youth.light {
+    /* Colores neón y cyber - AZUL ELÉCTRICO */
+    --primary: 195 100% 45%; /* Azul cian neón */
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 280 85% 60%; /* Morado neón */
+    --secondary-foreground: 0 0% 100%;
+    
+    --accent: 330 90% 55%; /* Rosa fucsia neón */
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 195 60% 70%;
+    --input: 195 50% 88%;
+    --ring: 195 100% 45%;
+    
+    /* Fondo AZUL CIAN vibrante */
+    --background: 195 75% 92%; /* Azul cian claro */
+    --foreground: 210 90% 15%; /* Azul muy oscuro */
+    
+    --card: 195 80% 96%; /* Tarjetas cian muy claro */
+    --card-foreground: 210 85% 18%; /* Texto azul oscuro */
+    
+    --popover: 280 70% 95%; /* Popover morado pastel */
+    --popover-foreground: 210 80% 15%;
+    
+    --muted: 195 60% 85%; /* Cian pálido */
+    --muted-foreground: 210 70% 30%; /* Azul medio */
+    
+    /* Sidebar CYBER azul intenso */
+    --sidebar-background: 195 80% 85%; /* Cian intenso */
+    --sidebar-foreground: 210 90% 12%; /* Azul muy oscuro */
+    --sidebar-primary: 195 100% 40%; /* Cian profundo */
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 330 85% 80%; /* Fucsia pastel para hover */
+    --sidebar-accent-foreground: 210 90% 12%;
+    --sidebar-border: 195 75% 70%;
+    --sidebar-ring: 195 100% 45%;
+    --sidebar: 195 80% 85%;
+    
+    /* Fuente moderna, techno */
+    --font-sans: 'Rajdhani', 'Orbitron', 'Poppins', 'Montserrat', -apple-system, sans-serif;
+    
+    /* Bordes angular */
+    --radius: 0.375rem;
+}
+
+html.theme-youth.dark {
+    --primary: 195 100% 60%; /* Cian neón brillante */
+    --primary-foreground: 210 90% 8%;
+    
+    --secondary: 280 90% 70%; /* Morado neón */
+    --secondary-foreground: 210 90% 8%;
+    
+    --accent: 330 95% 65%; /* Fucsia neón */
+    --accent-foreground: 210 90% 8%;
+    
+    /* Fondo AZUL OSCURO cyberpunk */
+    --background: 210 65% 12%; /* Azul profundo */
+    --foreground: 195 100% 90%; /* Cian muy claro */
+    
+    --card: 210 60% 16%; /* Tarjetas azul oscuro */
+    --card-foreground: 195 90% 88%; /* Texto cian claro */
+    
+    --popover: 210 60% 18%;
+    --popover-foreground: 195 90% 88%;
+    
+    --muted: 210 55% 22%; /* Azul medio oscuro */
+    --muted-foreground: 195 70% 75%; /* Cian pálido */
+    
+    --border: 210 60% 30%; /* Bordes azul medio */
+    --input: 210 55% 25%;
+    
+    /* Sidebar CYBERPUNK azul profundo */
+    --sidebar-background: 210 70% 10%; /* Azul muy profundo */
+    --sidebar-foreground: 195 100% 88%; /* Cian claro */
+    --sidebar-primary: 195 100% 55%; /* Cian neón */
+    --sidebar-primary-foreground: 210 90% 8%;
+    --sidebar-accent: 280 80% 30%; /* Morado oscuro para hover */
+    --sidebar-accent-foreground: 195 95% 85%;
+    --sidebar-border: 210 65% 20%;
+    --sidebar-ring: 195 100% 55%;
+    --sidebar: 210 70% 10%;
+}
+
+/* ==============================================
+   TEMA ADULTOS (Adults) - Mayor especificidad
+   ============================================== */
+html.theme-adults,
+html.theme-adults.light {
+    /* Colores elegantes - NARANJA Y BEIGE */
+    --primary: 25 95% 50%; /* Naranja corporativo */
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 35 40% 45%; /* Marrón terracota */
+    --secondary-foreground: 0 0% 100%;
+    
+    --accent: 35 50% 85%; /* Beige cálido */
+    --accent-foreground: 35 60% 15%;
+    
+    --destructive: 0 75% 50%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 35 30% 75%;
+    --input: 35 35% 90%;
+    --ring: 25 95% 50%;
+    
+    /* Fondo BEIGE/CREMA cálido */
+    --background: 35 45% 95%; /* Beige muy claro */
+    --foreground: 35 80% 15%; /* Marrón muy oscuro */
+    
+    --card: 35 50% 98%; /* Tarjetas crema */
+    --card-foreground: 35 75% 18%; /* Texto marrón oscuro */
+    
+    --popover: 25 60% 96%; /* Popover naranja pastel */
+    --popover-foreground: 35 75% 15%;
+    
+    --muted: 35 40% 88%; /* Beige pálido */
+    --muted-foreground: 35 60% 35%; /* Marrón medio */
+    
+    /* Sidebar NARANJA corporativo */
+    --sidebar-background: 25 70% 88%; /* Naranja pálido */
+    --sidebar-foreground: 35 80% 12%; /* Marrón muy oscuro */
+    --sidebar-primary: 25 95% 48%; /* Naranja profundo */
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 35 60% 82%; /* Beige para hover */
+    --sidebar-accent-foreground: 35 80% 12%;
+    --sidebar-border: 25 60% 75%;
+    --sidebar-ring: 25 95% 50%;
+    --sidebar: 25 70% 88%;
+    
+    /* Fuente clásica, elegante, serif */
+    --font-sans: 'Inter', 'Roboto', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    /* Bordes mínimos */
+    --radius: 0.375rem;
+}
+
+html.theme-adults.dark {
+    --primary: 25 95% 60%; /* Naranja brillante */
+    --primary-foreground: 35 70% 10%;
+    
+    --secondary: 35 50% 70%;
+    --secondary-foreground: 35 70% 10%;
+    
+    --accent: 35 30% 30%;
+    --accent-foreground: 35 60% 90%;
+    
+    /* Fondo MARRÓN oscuro elegante */
+    --background: 35 40% 12%; /* Marrón profundo */
+    --foreground: 35 50% 92%; /* Beige muy claro */
+    
+    --card: 35 35% 16%; /* Tarjetas marrón oscuro */
+    --card-foreground: 35 45% 88%; /* Texto beige claro */
+    
+    --popover: 35 35% 18%;
+    --popover-foreground: 35 45% 88%;
+    
+    --muted: 35 30% 22%; /* Marrón medio oscuro */
+    --muted-foreground: 35 40% 70%; /* Beige medio */
+    
+    --border: 35 30% 28%; /* Bordes marrón medio */
+    --input: 35 30% 25%;
+    
+    /* Sidebar MARRÓN profundo elegante */
+    --sidebar-background: 35 45% 10%; /* Marrón muy profundo */
+    --sidebar-foreground: 35 50% 90%; /* Beige claro */
+    --sidebar-primary: 25 95% 58%; /* Naranja brillante */
+    --sidebar-primary-foreground: 35 70% 10%;
+    --sidebar-accent: 35 35% 18%; /* Marrón medio para hover */
+    --sidebar-accent-foreground: 35 50% 88%;
+    --sidebar-border: 35 35% 22%;
+    --sidebar-ring: 25 95% 55%;
+    --sidebar: 35 45% 10%;
+}
+
+/* ==============================================
+   ANIMACIONES Y TRANSICIONES PARA TEMAS
+   ============================================== */
+:root {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+* {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+}
+
+/* ==============================================
+   ESTILOS ESPECIALES POR TEMA
+   ============================================== */
+
+/* TEMA INFANTIL - Efectos juguetones */
+html.theme-kids {
+    letter-spacing: 0.02em;
+    font-weight: 600;
+}
+
+html.theme-kids button,
+html.theme-kids .btn {
+    @apply shadow-lg hover:shadow-xl transform hover:scale-105 font-bold;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+html.theme-kids .card,
+html.theme-kids [class*="rounded"] {
+    box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1);
+}
+
+html.theme-kids h1,
+html.theme-kids h2,
+html.theme-kids h3 {
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* TEMA JUVENIL - Efectos neón/cyber */
+html.theme-youth {
+    letter-spacing: 0.03em;
+    font-weight: 500;
+}
+
+html.theme-youth button,
+html.theme-youth .btn {
+    @apply border-2 font-semibold uppercase text-xs tracking-wider;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    transition: all 0.15s ease-in-out;
+}
+
+html.theme-youth button:hover,
+html.theme-youth .btn:hover {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    transform: translateY(-1px);
+}
+
+html.theme-youth .card {
+    @apply border-2;
+    background: linear-gradient(135deg, transparent 0%, rgba(59, 130, 246, 0.05) 100%);
+}
+
+html.theme-youth h1,
+html.theme-youth h2,
+html.theme-youth h3 {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* TEMA ADULTOS - Efectos profesionales */
+html.theme-adults {
+    letter-spacing: 0.01em;
+    font-weight: 400;
+}
+
+html.theme-adults button,
+html.theme-adults .btn {
+    @apply font-medium;
+    transition: all 0.2s ease;
+}
+
+html.theme-adults .card {
+    @apply shadow-sm hover:shadow-md;
+    transition: box-shadow 0.3s ease;
+}
+
+html.theme-adults h1,
+html.theme-adults h2,
+html.theme-adults h3 {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+/* ==============================================
+   ACCESIBILIDAD - TAMAÑOS DE FUENTE
+   ============================================== */
+:root {
+    --font-size-base: 16px;
+}
+
+.font-size-small {
+    --font-size-base: 14px;
+}
+
+.font-size-normal {
+    --font-size-base: 16px;
+}
+
+.font-size-large {
+    --font-size-base: 18px;
+}
+
+.font-size-extra-large {
+    --font-size-base: 20px;
+}
+
+/* Aplicar tamaño base al HTML */
+html {
+    font-size: var(--font-size-base);
+}
+
+/* ==============================================
+   ACCESIBILIDAD - CONTRASTE ALTO
+   ============================================== */
+.high-contrast {
+    --contrast-boost: 1;
+}
+
+html.high-contrast.theme-kids {
+    --foreground: 280 10% 0%;
+    --background: 45 60% 100%;
+    --muted-foreground: 280 10% 20%;
+}
+
+html.high-contrast.theme-kids.dark {
+    --foreground: 280 5% 100%;
+    --background: 280 20% 0%;
+    --muted-foreground: 280 5% 85%;
+    --border: 280 15% 40%;
+}
+
+html.high-contrast.theme-youth {
+    --foreground: 210 15% 0%;
+    --background: 210 25% 100%;
+    --muted-foreground: 210 10% 25%;
+}
+
+html.high-contrast.theme-youth.dark {
+    --foreground: 210 5% 100%;
+    --background: 210 30% 0%;
+    --muted-foreground: 210 5% 85%;
+    --border: 210 20% 35%;
+}
+
+html.high-contrast.theme-adults {
+    --foreground: 240 10% 0%;
+    --background: 0 0% 100%;
+    --muted-foreground: 240 4% 30%;
+}
+
+html.high-contrast.theme-adults.dark {
+    --foreground: 0 0% 100%;
+    --background: 240 10% 0%;
+    --muted-foreground: 240 5% 80%;
+    --border: 240 4% 30%;
+}
+
+html.high-contrast button,
+html.high-contrast .btn {
+    border: 2px solid currentColor !important;
+}
+
+.high-contrast a {
+    text-decoration: underline;
+}
+
+/* ==============================================
+   OVERRIDE DE UTILIDADES LEGADAS (bg/border)
+   para que las clases existentes respeten el tema
+   ============================================== */
+@layer base {
+    .bg-white,
+    .dark .bg-white,
+    .bg-gray-100,
+    .dark .bg-gray-800 {
+        background-color: hsl(var(--card)) !important;
+        color: hsl(var(--card-foreground));
+    }
+
+    .bg-gray-50,
+    .dark .bg-gray-900 {
+        background-color: hsl(var(--muted)) !important;
+        color: hsl(var(--muted-foreground));
+    }
+
+    .border-gray-200,
+    .dark .border-gray-700,
+    .divide-gray-200 > :not([hidden]) ~ :not([hidden]),
+    .dark .divide-gray-700 > :not([hidden]) ~ :not([hidden]) {
+        border-color: hsl(var(--border)) !important;
+    }
+
+    .text-gray-800,
+    .text-gray-700,
+    .dark .text-gray-300,
+    .dark .text-gray-100 {
+        color: hsl(var(--foreground)) !important;
+    }
+
+    .bg-gray-100.text-gray-800,
+    .bg-gray-50.text-gray-800,
+    .bg-white.text-gray-800 {
+        color: hsl(var(--foreground)) !important;
+    }
+}
