@@ -7,17 +7,19 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthBase from '@/layouts/AuthLayout.vue';
-import { register } from '@/routes';
 import { store } from '@/routes/login';
-import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/vue3';
 import { UtensilsCrossed, ChefHat } from 'lucide-vue-next';
+import { route } from 'ziggy-js';
 
 defineProps<{
     status?: string;
     canResetPassword: boolean;
     canRegister: boolean;
 }>();
+
+const loginForm = store.form();
+loginForm.action = route('login.store');
 </script>
 
 <template>
@@ -44,7 +46,7 @@ defineProps<{
         </div>
 
         <Form
-            v-bind="store.form()"
+            v-bind="loginForm"
             :reset-on-success="['password']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
@@ -70,7 +72,7 @@ defineProps<{
                         <Label for="password">Contraseña</Label>
                         <TextLink
                             v-if="canResetPassword"
-                            :href="request()"
+                            :href="route('password.request')"
                             class="text-sm"
                             :tabindex="5"
                         >
@@ -114,7 +116,7 @@ defineProps<{
                 v-if="canRegister"
             >
                 ¿No tienes una cuenta?
-                <TextLink :href="register()" :tabindex="5">Regístrate</TextLink>
+                <TextLink :href="route('register')" :tabindex="5">Regístrate</TextLink>
             </div>
         </Form>
 
