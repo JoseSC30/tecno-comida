@@ -40,6 +40,11 @@
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
         @routes
+        <script>
+            if (typeof window !== 'undefined' && window.Ziggy) {
+                window.Ziggy.absolute = false;
+            }
+        </script>
         @vite(['resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
         @inertiaHead
     </head>
