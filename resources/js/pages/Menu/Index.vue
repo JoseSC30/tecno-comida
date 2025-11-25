@@ -6,6 +6,7 @@ import { useCart } from '@/composables/useCart';
 import CartSidebar from '@/components/CartSidebar.vue';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-vue-next';
+import { route } from 'ziggy-js';
 
 const props = defineProps<{
     productos: Array<{
@@ -47,8 +48,8 @@ const filterByCategory = (categoryId: number | null) => {
 };
 
 const breadcrumbs = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Menú', href: '/menu' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Menú', href: route('menu') },
 ];
 </script>
 

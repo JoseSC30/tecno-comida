@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { ShoppingCart, CreditCard, MapPin } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { route } from 'ziggy-js';
 
 const { cartItems, total, clearCart } = useCart();
 
@@ -24,7 +25,7 @@ const submit = () => {
         price: item.price
     }));
     
-    form.post('/orders', {
+    form.post(route('orders.store'), {
         onSuccess: () => {
             clearCart();
         },
@@ -32,9 +33,9 @@ const submit = () => {
 };
 
 const breadcrumbs = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Menú', href: '/menu' },
-    { title: 'Checkout', href: '/checkout' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Menú', href: route('menu') },
+    { title: 'Checkout', href: route('checkout') },
 ];
 </script>
 
@@ -62,7 +63,7 @@ const breadcrumbs = [
                         </div>
                     </div>
                     <div class="mt-4">
-                        <Link href="/menu">
+                        <Link :href="route('menu')">
                             <Button>
                                 Ver Menú
                             </Button>

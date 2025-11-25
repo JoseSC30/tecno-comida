@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ArrowLeft } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { route } from 'ziggy-js';
 
 const props = defineProps<{
     pedido: {
@@ -32,13 +33,13 @@ const props = defineProps<{
 const pedido = computed(() => props.pedido);
 
 const breadcrumbs = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Pedidos', href: '/orders' },
-    { title: `Pedido #${props.pedido.id}`, href: `/orders/${props.pedido.id}` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Pedidos', href: route('orders.index') },
+    { title: `Pedido #${props.pedido.id}`, href: route('orders.show', props.pedido.id) },
 ];
 
 const updateStatus = (status: string) => {
-    router.put(`/admin/orders/${props.pedido.id}/status`, { status });
+    router.put(route('orders.updateStatus', props.pedido.id), { status });
 };
 </script>
 
@@ -49,7 +50,7 @@ const updateStatus = (status: string) => {
         <div class="p-6">
             <div class="mb-6">
                 <Button variant="ghost" as-child class="mb-4">
-                    <Link href="/orders">
+                    <Link :href="route('orders.index')">
                         <ArrowLeft class="mr-2 h-4 w-4" />
                         Volver
                     </Link>

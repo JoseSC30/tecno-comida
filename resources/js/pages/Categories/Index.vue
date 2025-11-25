@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Button } from '@/components/ui/button';
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import { Trash2 } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { route } from 'ziggy-js';
 
 const props = defineProps<{
     categorias: Array<{
@@ -17,8 +18,8 @@ const props = defineProps<{
 const categorias = computed(() => props.categorias);
 
 const breadcrumbs = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Categorías', href: '/admin/categories' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Categorías', href: route('categories.index') },
 ];
 </script>
 
@@ -57,7 +58,7 @@ const breadcrumbs = [
                             as="button"
                             @click="() => {
                                 if (window.confirm('¿Estás seguro de eliminar esta categoría?')) {
-                                    $inertia.delete(`/admin/categories/${categoria.id}`);
+                                    router.delete(route('categories.destroy', categoria.id));
                                 }
                             }"
                         >

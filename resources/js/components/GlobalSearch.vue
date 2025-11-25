@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import { Loader2, Search, X } from 'lucide-vue-next';
+import { route } from 'ziggy-js';
 
 type SearchResults = {
     productos: Array<{
@@ -38,8 +39,12 @@ let debounceId: number | undefined;
 let abortController: AbortController | null = null;
 
 const buildSearchUrl = (term: string): string | null => {
-    if (typeof window === 'undefined') return null;
-    return new URL(`/search?q=${encodeURIComponent(term)}`, window.location.origin).toString();
+    try {
+        return route('search.global', { q: term }, true);
+    } catch (error) {
+        console.error('No se pudo construir la URL de búsqueda', error);
+        return null;
+    }
 };
 
 const page = usePage();

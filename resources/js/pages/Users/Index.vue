@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Button } from '@/components/ui/button';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { Pencil, Trash2, Plus } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { route } from 'ziggy-js';
 
 const props = defineProps<{
     usuarios: Array<{
@@ -21,8 +22,8 @@ const props = defineProps<{
 const usuarios = computed(() => props.usuarios);
 
 const breadcrumbs = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Usuarios', href: '/admin/users' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Usuarios', href: route('users.index') },
 ];
 </script>
 
@@ -36,7 +37,7 @@ const breadcrumbs = [
                     Gestionar Usuarios
                 </h1>
                 <Button as-child>
-                    <Link href="/admin/users/create">
+                    <Link :href="route('users.create')">
                         <Plus class="mr-2 h-4 w-4" />
                         Nuevo Usuario
                     </Link>
@@ -88,7 +89,7 @@ const breadcrumbs = [
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                                 <Button variant="ghost" size="sm" as-child class="mr-2">
-                                    <Link :href="`/admin/users/${usuario.id}/edit`">
+                                    <Link :href="route('users.edit', usuario.id)">
                                         <Pencil class="h-4 w-4" />
                                     </Link>
                                 </Button>
@@ -98,7 +99,7 @@ const breadcrumbs = [
                                     as="button"
                                     @click="() => {
                                         if (window.confirm('¿Estás seguro de eliminar este usuario?')) {
-                                            $inertia.delete(`/admin/users/${usuario.id}`);
+                                            router.delete(route('users.destroy', usuario.id));
                                         }
                                     }"
                                 >

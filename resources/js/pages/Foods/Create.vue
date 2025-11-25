@@ -8,6 +8,7 @@ import InputError from '@/components/InputError.vue';
 import { Head, useForm, Link } from '@inertiajs/vue3';
 import { ArrowLeft } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { route } from 'ziggy-js';
 
 const props = defineProps<{
     categorias: Array<{
@@ -28,15 +29,15 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/admin/foods', {
+    form.post(route('foods.store'), {
         onSuccess: () => form.reset(),
     });
 };
 
 const breadcrumbs = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Comidas', href: '/admin/foods' },
-    { title: 'Nueva Comida', href: '/admin/foods/create' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Comidas', href: route('foods.index') },
+    { title: 'Nueva Comida', href: route('foods.create') },
 ];
 </script>
 
@@ -46,7 +47,7 @@ const breadcrumbs = [
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-6">
             <Button variant="ghost" as-child class="mb-4">
-                <Link href="/admin/foods">
+                <Link :href="route('foods.index')">
                     <ArrowLeft class="mr-2 h-4 w-4" />
                     Volver
                 </Link>
@@ -142,7 +143,7 @@ const breadcrumbs = [
 
                         <div class="flex justify-end gap-4">
                             <Button type="button" variant="outline" as-child>
-                                <Link href="/admin/foods">Cancelar</Link>
+                                <Link :href="route('foods.index')">Cancelar</Link>
                             </Button>
                             <Button type="submit" :disabled="form.processing">
                                 {{ form.processing ? 'Guardando...' : 'Guardar Comida' }}

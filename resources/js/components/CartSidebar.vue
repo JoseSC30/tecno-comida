@@ -3,12 +3,13 @@ import { useCart } from '@/composables/useCart';
 import { Button } from '@/components/ui/button';
 import { X, Minus, Plus, Trash2, ShoppingCart } from 'lucide-vue-next';
 import { router } from '@inertiajs/vue3';
+import { route } from 'ziggy-js';
 
 const { cartItems, isCartOpen, closeCart, incrementQuantity, decrementQuantity, removeFromCart, total, itemCount, clearCart } = useCart();
 
 const checkout = () => {
     closeCart();
-    router.visit('/checkout');
+    router.visit(route('checkout'));
 };
 </script>
 

@@ -11,11 +11,11 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 import { BookOpen, Folder, LayoutGrid, ShoppingBag, UtensilsCrossed, Users, Package, List } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { route } from 'ziggy-js';
 import AppLogo from './AppLogo.vue';
 
 const page = usePage();
@@ -25,17 +25,17 @@ const mainNavItems = computed((): NavItem[] => {
     const items: NavItem[] = [
         {
             title: 'Dashboard',
-            href: dashboard(),
+            href: route('dashboard'),
             icon: LayoutGrid,
         },
         {
             title: 'Menú',
-            href: '/menu',
+            href: route('menu'),
             icon: UtensilsCrossed,
         },
         {
             title: 'Mis Pedidos',
-            href: '/orders',
+            href: route('orders.index'),
             icon: ShoppingBag,
         },
     ];
@@ -45,17 +45,17 @@ const mainNavItems = computed((): NavItem[] => {
         items.push(
             {
                 title: 'Gestionar Comidas',
-                href: '/admin/foods',
+                href: route('foods.index'),
                 icon: UtensilsCrossed,
             },
             {
                 title: 'Categorías',
-                href: '/admin/categories',
+                href: route('categories.index'),
                 icon: List,
             },
             {
                 title: 'Gestionar Usuarios',
-                href: '/admin/users',
+                href: route('users.index'),
                 icon: Users,
             }
         );
@@ -66,12 +66,12 @@ const mainNavItems = computed((): NavItem[] => {
         items.push(
             {
                 title: 'Gestionar Comidas',
-                href: '/seller/foods',
+                href: route('seller.foods.index'),
                 icon: Package,
             },
             {
                 title: 'Categorías',
-                href: '/seller/categories',
+                href: route('seller.categories.index'),
                 icon: List,
             }
         );
@@ -100,7 +100,7 @@ const footerNavItems: NavItem[] = [
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="dashboard()">
+                        <Link :href="route('dashboard')">
                             <AppLogo />
                         </Link>
                     </SidebarMenuButton>

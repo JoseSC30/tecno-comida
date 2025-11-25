@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import VisitCounterBar from '@/components/VisitCounterBar.vue';
+import { useTheme } from '@/composables/useTheme';
 import { Head, Link } from '@inertiajs/vue3';
+import { route } from 'ziggy-js';
 import { UtensilsCrossed, ShoppingCart, ChefHat, Users, BarChart3, Clock } from 'lucide-vue-next';
 import { onMounted } from 'vue';
-import { useTheme } from '@/composables/useTheme';
 
 defineOptions({ layout: null });
 
@@ -18,15 +19,15 @@ onMounted(() => {
 });
 
 function login() {
-    return '/login';
+    return route('login');
 }
 
 function register() {
-    return '/register';
+    return route('register');
 }
 
 function dashboard() {
-    return '/dashboard';
+    return route('dashboard');
 }
 </script>
 

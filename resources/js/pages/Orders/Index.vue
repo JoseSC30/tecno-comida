@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Head, Link } from '@inertiajs/vue3';
 import { Eye } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { route } from 'ziggy-js';
 
 const props = defineProps<{
     pedidos: Array<{
@@ -26,8 +27,8 @@ const props = defineProps<{
 const pedidos = computed(() => props.pedidos);
 
 const breadcrumbs = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Pedidos', href: '/orders' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Pedidos', href: route('orders.index') },
 ];
 
 const getStatusColor = (status: string) => {
@@ -89,7 +90,7 @@ const getStatusColor = (status: string) => {
                                 Bs. {{ pedido.total }}
                             </div>
                             <Button variant="ghost" size="sm" as-child class="mt-2">
-                                <Link :href="`/orders/${pedido.id}`">
+                                <Link :href="route('orders.show', pedido.id)">
                                     <Eye class="mr-2 h-4 w-4" />
                                     Ver detalle
                                 </Link>

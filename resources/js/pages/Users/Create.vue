@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import InputError from '@/components/InputError.vue';
 import { Head, useForm, Link } from '@inertiajs/vue3';
 import { ArrowLeft } from 'lucide-vue-next';
+import { route } from 'ziggy-js';
 
 const props = defineProps<{
     roles: Array<{
@@ -24,15 +25,15 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/admin/users', {
+    form.post(route('users.store'), {
         onSuccess: () => form.reset(),
     });
 };
 
 const breadcrumbs = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Usuarios', href: '/admin/users' },
-    { title: 'Nuevo Usuario', href: '/admin/users/create' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Usuarios', href: route('users.index') },
+    { title: 'Nuevo Usuario', href: route('users.create') },
 ];
 </script>
 
@@ -42,7 +43,7 @@ const breadcrumbs = [
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-6">
             <Button variant="ghost" as-child class="mb-4">
-                <Link href="/admin/users">
+                <Link :href="route('users.index')">
                     <ArrowLeft class="mr-2 h-4 w-4" />
                     Volver
                 </Link>
@@ -126,7 +127,7 @@ const breadcrumbs = [
 
                         <div class="flex justify-end gap-4">
                             <Button type="button" variant="outline" as-child>
-                                <Link href="/admin/users">Cancelar</Link>
+                                <Link :href="route('users.index')">Cancelar</Link>
                             </Button>
                             <Button type="submit" :disabled="form.processing">
                                 {{ form.processing ? 'Creando...' : 'Crear Usuario' }}
