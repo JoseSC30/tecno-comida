@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, ShoppingBag, UtensilsCrossed, Users, Package, List } from 'lucide-vue-next';
+import { BookOpen, Folder, LayoutGrid, ShoppingBag, UtensilsCrossed, Users, Package, List, ArrowRightLeft } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { route } from 'ziggy-js';
 import AppLogo from './AppLogo.vue';
@@ -44,14 +44,24 @@ const mainNavItems = computed((): NavItem[] => {
     if (user.value?.is_admin) {
         items.push(
             {
-                title: 'Gestionar Comidas',
-                href: route('foods.index'),
+                title: 'Gestionar Productos',
+                href: route('productos.index'),
                 icon: UtensilsCrossed,
             },
             {
                 title: 'Categorías',
-                href: route('categories.index'),
+                href: route('categorias.index'),
                 icon: List,
+            },
+            {
+                title: 'Gestionar Insumos',
+                href: route('insumos.index'),
+                icon: Package,
+            },
+            {
+                title: 'Gestionar Movimientos',
+                href: route('movimientos.index'),
+                icon: ArrowRightLeft,
             },
             {
                 title: 'Gestionar Usuarios',
@@ -61,17 +71,17 @@ const mainNavItems = computed((): NavItem[] => {
         );
     }
 
-    // Vendedor: gestión de comidas y pedidos
+    // Vendedor: gestión de productos y pedidos
     if (user.value?.is_vendedor && !user.value?.is_admin) {
         items.push(
             {
-                title: 'Gestionar Comidas',
-                href: route('seller.foods.index'),
+                title: 'Gestionar Productos',
+                href: route('seller.productos.index'),
                 icon: Package,
             },
             {
                 title: 'Categorías',
-                href: route('seller.categories.index'),
+                href: route('seller.categorias.index'),
                 icon: List,
             }
         );
@@ -80,18 +90,18 @@ const mainNavItems = computed((): NavItem[] => {
     return items;
 });
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Github Repo',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
-    },
-];
+// const footerNavItems: NavItem[] = [
+//     {
+//         title: 'Github Repo',
+//         href: 'https://github.com/laravel/vue-starter-kit',
+//         icon: Folder,
+//     },
+//     {
+//         title: 'Documentation',
+//         href: 'https://laravel.com/docs/starter-kits#vue',
+//         icon: BookOpen,
+//     },
+// ];
 </script>
 
 <template>
@@ -113,7 +123,7 @@ const footerNavItems: NavItem[] = [
         </SidebarContent>
 
         <SidebarFooter>
-            <NavFooter :items="footerNavItems" />
+            <!-- <NavFooter :items="footerNavItems" /> -->
             <NavUser />
         </SidebarFooter>
     </Sidebar>

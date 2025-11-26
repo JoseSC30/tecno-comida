@@ -25,6 +25,14 @@ const breadcrumbs = [
     { title: 'Dashboard', href: route('dashboard') },
     { title: 'Usuarios', href: route('users.index') },
 ];
+
+const deleteUser = (usuario: any) => {
+    if (confirm('¿Estás seguro de eliminar este usuario?')) {
+        router.delete(route('users.destroy', usuario.id), {
+            preserveScroll: true,
+        });
+    }
+};
 </script>
 
 <template>
@@ -96,12 +104,7 @@ const breadcrumbs = [
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    as="button"
-                                    @click="() => {
-                                        if (window.confirm('¿Estás seguro de eliminar este usuario?')) {
-                                            router.delete(route('users.destroy', usuario.id));
-                                        }
-                                    }"
+                                    @click="() => deleteUser(usuario)"
                                 >
                                     <Trash2 class="h-4 w-4 text-red-600" />
                                 </Button>

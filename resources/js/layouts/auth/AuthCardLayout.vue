@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import {
     Card,
     CardContent,
@@ -9,6 +8,13 @@ import {
 } from '@/components/ui/card';
 import { home } from '@/routes';
 import { Link } from '@inertiajs/vue3';
+import { useTheme } from '@/composables/useTheme';
+import { computed } from 'vue';
+
+const { effectiveMode } = useTheme();
+const logoSrc = computed(() => {
+    return effectiveMode.value === 'dark' ? '/images/Logo2.png' : '/images/Logo1.png';
+});
 
 defineProps<{
     title?: string;
@@ -25,9 +31,11 @@ defineProps<{
                 :href="home()"
                 class="flex items-center gap-2 self-center font-medium"
             >
-                <div class="flex h-9 w-9 items-center justify-center">
-                    <AppLogoIcon
-                        class="size-9 fill-current text-black dark:text-white"
+                <div class="flex h-9 w-9 items-center justify-center overflow-hidden rounded-md">
+                    <img
+                        :src="logoSrc"
+                        alt="Logo"
+                        class="size-9 object-cover"
                     />
                 </div>
             </Link>

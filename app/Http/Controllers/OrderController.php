@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Food;
+use App\Models\Producto;
 use App\Http\Requests\OrderRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,14 +54,14 @@ class OrderController extends Controller
             $orderItems = [];
 
             foreach ($validated['items'] as $item) {
-                $food = Food::findOrFail($item['food_id']);
-                $subtotal = $food->price * $item['quantity'];
+                $product = Producto::findOrFail($item['food_id']);
+                $subtotal = $product->price * $item['quantity'];
                 $total += $subtotal;
 
                 $orderItems[] = [
-                    'food_id' => $food->id,
+                    'food_id' => $product->id,
                     'quantity' => $item['quantity'],
-                    'unit_price' => $food->price,
+                    'unit_price' => $product->price,
                     'subtotal' => $subtotal,
                 ];
             }

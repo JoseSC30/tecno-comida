@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Food;
-use App\Models\Category;
+use App\Models\Producto;
+use App\Models\Categoria;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -11,17 +11,17 @@ class MenuController extends Controller
 {
     public function index(): Response
     {
-        $foods = Food::with('category')
+        $products = Producto::with('category')
             ->where('pro_disponible', true)
             ->latest()
             ->get();
 
-        $categories = Category::withCount(['foods' => function ($query) {
+        $categories = Categoria::withCount(['foods' => function ($query) {
             $query->where('pro_disponible', true);
         }])->get();
 
         return Inertia::render('Menu/Index', [
-            'productos' => $foods,
+            'productos' => $products,
             'categorias' => $categories,
         ]);
     }

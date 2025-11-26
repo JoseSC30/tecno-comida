@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Food;
+use App\Models\Categoria;
+use App\Models\Producto;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -35,8 +35,8 @@ class DashboardController extends Controller
             'estadisticas' => array_merge(
                 [
                     'total_usuarios' => User::count(),
-                    'total_productos' => $this->hasFoods() ? Food::count() : 0,
-                    'total_categorias' => $this->hasCategories() ? Category::count() : 0,
+                    'total_productos' => $this->hasFoods() ? Producto::count() : 0,
+                    'total_categorias' => $this->hasCategories() ? Categoria::count() : 0,
                 ],
                 $this->hasOrders() ? [
                     'total_pedidos' => Order::count(),
@@ -48,7 +48,7 @@ class DashboardController extends Controller
                 ? Order::with(['user', 'items'])->latest()->take(5)->get()
                 : [],
             'productos_populares' => $this->canLoadPopularFoods()
-                ? Food::withCount('orderItems')->orderBy('order_items_count', 'desc')->take(5)->get()
+                ? Producto::withCount('orderItems')->orderBy('order_items_count', 'desc')->take(5)->get()
                 : [],
         ];
     }
@@ -58,7 +58,7 @@ class DashboardController extends Controller
         return [
             'estadisticas' => array_merge(
                 [
-                    'total_productos' => $this->hasFoods() ? Food::count() : 0,
+                    'total_productos' => $this->hasFoods() ? Producto::count() : 0,
                 ],
                 $this->hasOrders() ? [
                     'total_pedidos' => Order::count(),
@@ -70,7 +70,7 @@ class DashboardController extends Controller
                 ? Order::with(['user', 'items'])->latest()->take(10)->get()
                 : [],
             'productos_populares' => $this->canLoadPopularFoods()
-                ? Food::withCount('orderItems')->orderBy('order_items_count', 'desc')->take(5)->get()
+                ? Producto::withCount('orderItems')->orderBy('order_items_count', 'desc')->take(5)->get()
                 : [],
         ];
     }
@@ -87,7 +87,7 @@ class DashboardController extends Controller
                 ? Order::where('usu_id', $user->id)->with('items.food')->latest()->take(5)->get()
                 : [],
             'productos_destacados' => $this->hasFoods()
-                ? Food::where('pro_disponible', true)->inRandomOrder()->take(6)->get()
+                ? Producto::where('pro_disponible', true)->inRandomOrder()->take(6)->get()
                 : [],
         ];
     }

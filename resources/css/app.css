@@ -385,8 +385,8 @@ html.theme-youth.dark {
    ============================================== */
 html.theme-adults,
 html.theme-adults.light {
-    /* Colores elegantes - NARANJA Y BEIGE */
-    --primary: 25 95% 50%; /* Naranja corporativo */
+    /* Colores elegantes - ROJO Y BEIGE */
+    --primary: 357 85% 52%; /* Rojo corporativo #ec1c24 */
     --primary-foreground: 0 0% 100%;
     
     --secondary: 35 40% 45%; /* Marrón terracota */
@@ -400,7 +400,7 @@ html.theme-adults.light {
     
     --border: 35 30% 75%;
     --input: 35 35% 90%;
-    --ring: 25 95% 50%;
+    --ring: 357 85% 52%;
     
     /* Fondo BEIGE/CREMA cálido */
     --background: 35 45% 95%; /* Beige muy claro */
@@ -409,22 +409,22 @@ html.theme-adults.light {
     --card: 35 50% 98%; /* Tarjetas crema */
     --card-foreground: 35 75% 18%; /* Texto marrón oscuro */
     
-    --popover: 25 60% 96%; /* Popover naranja pastel */
+    --popover: 357 40% 96%; /* Popover rojo pastel */
     --popover-foreground: 35 75% 15%;
     
     --muted: 35 40% 88%; /* Beige pálido */
     --muted-foreground: 35 60% 35%; /* Marrón medio */
     
-    /* Sidebar NARANJA corporativo */
-    --sidebar-background: 25 70% 88%; /* Naranja pálido */
+    /* Sidebar ROJO corporativo */
+    --sidebar-background: 357 40% 92%; /* Rojo pálido */
     --sidebar-foreground: 35 80% 12%; /* Marrón muy oscuro */
-    --sidebar-primary: 25 95% 48%; /* Naranja profundo */
+    --sidebar-primary: 357 85% 52%; /* Rojo profundo #ec1c24 */
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 35 60% 82%; /* Beige para hover */
     --sidebar-accent-foreground: 35 80% 12%;
-    --sidebar-border: 25 60% 75%;
-    --sidebar-ring: 25 95% 50%;
-    --sidebar: 25 70% 88%;
+    --sidebar-border: 357 30% 80%;
+    --sidebar-ring: 357 85% 52%;
+    --sidebar: 357 40% 92%;
     
     /* Fuente clásica, elegante, serif */
     --font-sans: 'Inter', 'Roboto', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -434,7 +434,7 @@ html.theme-adults.light {
 }
 
 html.theme-adults.dark {
-    --primary: 25 95% 60%; /* Naranja brillante */
+    --primary: 357 85% 58%; /* Rojo brillante #ec1c24 */
     --primary-foreground: 35 70% 10%;
     
     --secondary: 35 50% 70%;
@@ -462,12 +462,12 @@ html.theme-adults.dark {
     /* Sidebar MARRÓN profundo elegante */
     --sidebar-background: 35 45% 10%; /* Marrón muy profundo */
     --sidebar-foreground: 35 50% 90%; /* Beige claro */
-    --sidebar-primary: 25 95% 58%; /* Naranja brillante */
+    --sidebar-primary: 357 85% 58%; /* Rojo brillante #ec1c24 */
     --sidebar-primary-foreground: 35 70% 10%;
     --sidebar-accent: 35 35% 18%; /* Marrón medio para hover */
     --sidebar-accent-foreground: 35 50% 88%;
     --sidebar-border: 35 35% 22%;
-    --sidebar-ring: 25 95% 55%;
+    --sidebar-ring: 357 85% 55%;
     --sidebar: 35 45% 10%;
 }
 
@@ -649,6 +649,97 @@ html.high-contrast .btn {
 
 .high-contrast a {
     text-decoration: underline;
+}
+
+/* ==============================================
+   TEMA INFANTIL - FONDO Y ESTILOS
+   ============================================== */
+html.theme-kids {
+    font-family: 'Comic Sans MS', 'Nunito', 'Fredoka', cursive, sans-serif;
+}
+
+html.theme-kids body {
+    background-image: url('/images/kids-bg-pattern.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+html.theme-kids.dark body {
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('/images/kids-bg-pattern.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+html.theme-kids .rounded-lg,
+html.theme-kids .rounded-md {
+    border-radius: 20px !important;
+}
+
+html.theme-kids button,
+html.theme-kids .btn {
+    border-radius: 25px !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+html.theme-kids h1,
+html.theme-kids h2,
+html.theme-kids h3 {
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+html.theme-kids .bg-white,
+html.theme-kids .bg-card {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+}
+
+html.theme-kids.dark .bg-white,
+html.theme-kids.dark .bg-card {
+    background: rgba(30, 41, 59, 0.95) !important;
+    backdrop-filter: blur(10px);
+}
+
+/* ==============================================
+   TEMA JUVENIL - FONDO Y ESTILOS
+   ============================================== */
+html.theme-youth body {
+    background-image: url('/images/juvenil.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+html.theme-youth.dark body {
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('/images/juvenil.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+html.theme-youth .bg-white,
+html.theme-youth .bg-card {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+}
+
+html.theme-youth.dark .bg-white,
+html.theme-youth.dark .bg-card {
+    background: rgba(30, 41, 59, 0.95) !important;
+    backdrop-filter: blur(10px);
 }
 
 /* ==============================================

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Role;
+use App\Models\Rol;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -40,7 +40,7 @@ class UserFactory extends Factory
 
     private function defaultRoleId(): int
     {
-        return Role::query()->firstOrCreate(['rol_nombre' => Role::CLIENTE])->getKey();
+        return Rol::query()->firstOrCreate(['rol_nombre' => Rol::CLIENTE])->getKey();
     }
 
     private function splitName(string $fullName): array

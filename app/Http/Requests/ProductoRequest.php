@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FoodRequest extends FormRequest
+class ProductoRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -17,8 +17,9 @@ class FoodRequest extends FormRequest
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
             'price' => 'required|numeric|min:0|max:9999999',
+            'cost' => 'nullable|numeric',
             'category_id' => 'required|exists:categorias,cat_id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:51200',
             'available' => 'nullable|boolean',
         ];
     }
@@ -26,7 +27,7 @@ class FoodRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'El nombre de la comida es obligatorio',
+            'name.required' => 'El nombre del producto es obligatorio',
             'name.max' => 'El nombre no puede exceder 255 caracteres',
             'description.max' => 'La descripción no puede exceder 1000 caracteres',
             'price.required' => 'El precio es obligatorio',

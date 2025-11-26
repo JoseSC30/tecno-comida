@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { cn } from '@/lib/utils';
-import { computed, useAttrs } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps<{
     class?: string;
+    modelValue?: string;
 }>();
 
-const attrs = useAttrs();
+const emit = defineEmits<{
+    'update:modelValue': [value: string];
+}>();
 
 const classes = computed(() =>
     cn(
@@ -17,5 +20,9 @@ const classes = computed(() =>
 </script>
 
 <template>
-    <textarea v-bind="attrs" :class="classes" />
+    <textarea 
+        :class="classes" 
+        :value="modelValue"
+        @input="emit('update:modelValue', ($event.target as HTMLTextAreaElement).value)"
+    />
 </template>

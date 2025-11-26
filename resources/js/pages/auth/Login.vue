@@ -9,8 +9,9 @@ import { Spinner } from '@/components/ui/spinner';
 import AuthBase from '@/layouts/AuthLayout.vue';
 import { store } from '@/routes/login';
 import { Form, Head } from '@inertiajs/vue3';
-import { UtensilsCrossed, ChefHat } from 'lucide-vue-next';
 import { route } from 'ziggy-js';
+import { useTheme } from '@/composables/useTheme';
+import { computed } from 'vue';
 
 defineProps<{
     status?: string;
@@ -18,24 +19,25 @@ defineProps<{
     canRegister: boolean;
 }>();
 
+const { effectiveMode } = useTheme();
+const logoSrc = computed(() => {
+    return effectiveMode.value === 'dark' ? '/images/Logo2.png' : '/images/Logo1.png';
+});
+
 const loginForm = store.form();
 loginForm.action = route('login.store');
 </script>
 
 <template>
-    <AuthBase
-        title="Sistema de Gestión de Comidas"
-        description="Ingresa tus credenciales para acceder al sistema"
-    >
+    <AuthBase>
         <Head title="Iniciar Sesión" />
 
         <!-- Logo/Banner -->
         <div class="mb-6 flex flex-col items-center">
-            <div class="mb-3 flex items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-red-500 p-4 shadow-lg">
-                <UtensilsCrossed class="h-12 w-12 text-white" />
+            <div class="mb-3 flex items-center justify-center rounded-lg overflow-hidden">
+                <img :src="logoSrc" alt="Logo" class="h-70 w-70 object-cover" />
             </div>
-            <h1 class="text-2xl font-bold text-foreground">¡Bienvenido!</h1>
-            <p class="text-sm text-muted-foreground">Gestiona tu negocio de comidas</p>
+            <!-- <h1 class="text-2xl font-bold text-foreground">¡Bienvenido!</h1> -->
         </div>
 
         <div
@@ -62,7 +64,7 @@ loginForm.action = route('login.store');
                         autofocus
                         :tabindex="1"
                         autocomplete="email"
-                        placeholder="tu@email.com"
+                        placeholder=" "
                     />
                     <InputError :message="errors.email" />
                 </div>
@@ -86,7 +88,7 @@ loginForm.action = route('login.store');
                         required
                         :tabindex="2"
                         autocomplete="current-password"
-                        placeholder="••••••••"
+                        placeholder=" "
                     />
                     <InputError :message="errors.password" />
                 </div>
@@ -100,13 +102,13 @@ loginForm.action = route('login.store');
 
                 <Button
                     type="submit"
-                    class="mt-4 w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+                    class="mt-4 w-full text-white hover:opacity-90"
+                    style="background-color: #ec1c24;"
                     :tabindex="4"
                     :disabled="processing"
                     data-test="login-button"
                 >
                     <Spinner v-if="processing" />
-                    <ChefHat v-else class="mr-2 h-4 w-4" />
                     Iniciar Sesión
                 </Button>
             </div>
@@ -121,13 +123,13 @@ loginForm.action = route('login.store');
         </Form>
 
         <!-- Footer informativo -->
-        <div class="mt-6 rounded-lg bg-muted/50 p-4 text-center">
+        <!-- <div class="mt-6 rounded-lg bg-muted/50 p-4 text-center">
             <p class="text-xs text-muted-foreground">
                 🍔 Sistema de Gestión de Comidas 🍕
             </p>
             <p class="mt-1 text-xs text-muted-foreground">
                 Administra pedidos, menú y clientes en un solo lugar
             </p>
-        </div>
+        </div> -->
     </AuthBase>
 </template>

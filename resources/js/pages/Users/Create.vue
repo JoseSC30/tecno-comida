@@ -12,21 +12,28 @@ const props = defineProps<{
     roles: Array<{
         id: number;
         name: string;
-        description: string;
     }>;
 }>();
 
 const form = useForm({
     name: '',
+    last_name: '',
     email: '',
     password: '',
     password_confirmation: '',
-    role_id: '',
+    role_id: '' as number | string,
 });
 
 const submit = () => {
+    console.log('=== SUBMIT FORM ===');
+    console.log('Form data:', form.data());
+    console.log('Role ID:', form.role_id, 'tipo:', typeof form.role_id);
+    
     form.post(route('users.store'), {
         onSuccess: () => form.reset(),
+        onError: (errors) => {
+            console.log('Errores de validación:', errors);
+        },
     });
 };
 
@@ -57,7 +64,7 @@ const breadcrumbs = [
 
                     <form @submit.prevent="submit" class="space-y-6">
                         <div>
-                            <Label for="name">Nombre completo *</Label>
+                            <Label for="name">Nombre *</Label>
                             <Input
                                 id="name"
                                 v-model="form.name"
@@ -67,6 +74,18 @@ const breadcrumbs = [
                                 autofocus
                             />
                             <InputError :message="form.errors.name" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <Label for="last_name">Apellido *</Label>
+                            <Input
+                                id="last_name"
+                                v-model="form.last_name"
+                                type="text"
+                                class="mt-1"
+                                required
+                            />
+                            <InputError :message="form.errors.last_name" class="mt-2" />
                         </div>
 
                         <div>
@@ -95,9 +114,6 @@ const breadcrumbs = [
                                 </option>
                             </select>
                             <InputError :message="form.errors.role_id" class="mt-2" />
-                            <p v-if="form.role_id" class="mt-1 text-sm text-gray-500">
-                                {{ roles.find(r => r.id == form.role_id)?.description }}
-                            </p>
                         </div>
 
                         <div>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import VisitCounterBar from '@/components/VisitCounterBar.vue';
 import { home } from '@/routes';
 import { Link } from '@inertiajs/vue3';
+import { ArrowLeft } from 'lucide-vue-next';
 
 defineProps<{
     title?: string;
@@ -19,16 +19,10 @@ defineProps<{
                 <div class="flex flex-col items-center gap-4">
                     <Link
                         :href="home()"
-                        class="flex flex-col items-center gap-2 font-medium"
+                        class="flex items-center gap-2 font-medium hover:opacity-80 transition-opacity"
                     >
-                        <div
-                            class="mb-1 flex h-9 w-9 items-center justify-center rounded-md"
-                        >
-                            <AppLogoIcon
-                                class="size-9 fill-current text-[var(--foreground)] dark:text-white"
-                            />
-                        </div>
-                        <span class="sr-only">{{ title }}</span>
+                        <ArrowLeft class="h-5 w-5" />
+                        <span class="text-sm">Volver al inicio</span>
                     </Link>
                     <div class="space-y-2 text-center">
                         <h1 class="text-xl font-medium">{{ title }}</h1>

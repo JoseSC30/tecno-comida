@@ -12,7 +12,7 @@ defineProps<{
     canRegister: boolean;
 }>();
 
-const { applyTheme } = useTheme();
+const { applyTheme, effectiveMode } = useTheme();
 
 onMounted(() => {
     applyTheme();
@@ -42,8 +42,8 @@ function dashboard() {
                         <UtensilsCrossed class="h-8 w-8 text-primary" />
                     </div>
                     <div>
-                        <h1 class="text-xl font-bold">FoodManager</h1>
-                        <p class="text-xs text-muted-foreground">Sistema de Gestión</p>
+                        <h1 class="text-xl font-bold">Restaurante Tina</h1>
+                        <!-- <p class="text-xs text-muted-foreground">Sistema de Gestión</p> -->
                     </div>
                 </div>
                 <div class="flex items-center gap-4">
@@ -78,26 +78,18 @@ function dashboard() {
             <div class="container mx-auto max-w-6xl">
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
                     <!-- Hero Text -->
-                    <div class="space-y-6">
+                    <!-- <div class="space-y-6">
                         <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-sm font-medium text-primary">
                             <ChefHat class="h-4 w-4" />
                             <span>Gestión Profesional de Comidas</span>
                         </div>
                         <h1 class="text-5xl lg:text-6xl font-bold leading-tight">
-                            Administra tu negocio de comidas
-                            <span class="text-primary">con facilidad</span>
+                            Restaurante Tina
                         </h1>
                         <p class="text-xl text-muted-foreground leading-relaxed">
                             Sistema completo para gestionar pedidos, inventario, clientes y estadísticas de tu negocio gastronómico en un solo lugar.
                         </p>
                         <div class="flex flex-wrap gap-4 pt-4">
-                            <Link
-                                v-if="!$page.props.auth.user"
-                                :href="register()"
-                                class="px-8 py-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-all hover:scale-105 shadow-lg"
-                            >
-                                Comenzar Gratis
-                            </Link>
                             <Link
                                 :href="$page.props.auth.user ? dashboard() : login()"
                                 class="px-8 py-4 bg-card text-card-foreground border border-border rounded-lg font-semibold hover:bg-accent transition-all"
@@ -105,6 +97,15 @@ function dashboard() {
                                 {{ $page.props.auth.user ? 'Ir al Dashboard' : 'Iniciar Sesión' }}
                             </Link>
                         </div>
+                    </div> -->
+                    
+                    <!-- Logo Grande -->
+                    <div class="flex items-center justify-center lg:col-span-1">
+                        <img 
+                            :src="effectiveMode === 'dark' ? '/images/Logo2.png' : '/images/Logo1.png'" 
+                            alt="Logo Restaurante Tina" 
+                            class="w-120 h-120 object-contain"
+                        />
                     </div>
 
                     <!-- Hero Visual -->
@@ -125,13 +126,13 @@ function dashboard() {
                                     </div>
                                     <div class="bg-card p-6 rounded-xl shadow-lg border border-border hover:scale-105 transition-transform -mt-4">
                                         <Users class="h-10 w-10 text-primary mb-3" />
-                                        <h3 class="font-bold text-lg">Clientes</h3>
-                                        <p class="text-sm text-muted-foreground">Base de datos</p>
+                                        <h3 class="font-bold text-lg">Reservas</h3>
+                                        <p class="text-sm text-muted-foreground">Gestión de reservas</p>
                                     </div>
                                     <div class="bg-card p-6 rounded-xl shadow-lg border border-border hover:scale-105 transition-transform mt-4">
                                         <BarChart3 class="h-10 w-10 text-primary mb-3" />
-                                        <h3 class="font-bold text-lg">Analytics</h3>
-                                        <p class="text-sm text-muted-foreground">Estadísticas clave</p>
+                                        <h3 class="font-bold text-lg">Pago</h3>
+                                        <p class="text-sm text-muted-foreground">Gestión de pagos</p>
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +147,7 @@ function dashboard() {
             <div class="container mx-auto max-w-6xl">
                 <div class="text-center mb-16">
                     <h2 class="text-4xl font-bold mb-4">Características Principales</h2>
-                    <p class="text-xl text-muted-foreground">Todo lo que necesitas para gestionar tu negocio</p>
+                    <!-- <p class="text-xl text-muted-foreground">Todo lo que necesitas para gestionar tu negocio</p> -->
                 </div>
 
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -219,33 +220,6 @@ function dashboard() {
             </div>
         </section>
 
-        <!-- CTA Section -->
-        <section class="py-20 px-6">
-            <div class="container mx-auto max-w-4xl">
-                <div class="bg-gradient-to-br from-primary to-primary/80 rounded-3xl p-12 text-center text-primary-foreground shadow-2xl">
-                    <h2 class="text-4xl font-bold mb-4">¿Listo para comenzar?</h2>
-                    <p class="text-xl mb-8 opacity-90">
-                        Únete a FoodManager y lleva tu negocio al siguiente nivel
-                    </p>
-                    <div class="flex flex-wrap justify-center gap-4">
-                        <Link
-                            v-if="!$page.props.auth.user"
-                            :href="register()"
-                            class="px-8 py-4 bg-background text-foreground rounded-lg font-semibold hover:bg-background/90 transition-all hover:scale-105 shadow-lg"
-                        >
-                            Crear Cuenta Gratis
-                        </Link>
-                        <Link
-                            :href="$page.props.auth.user ? dashboard() : login()"
-                            class="px-8 py-4 bg-transparent border-2 border-primary-foreground text-primary-foreground rounded-lg font-semibold hover:bg-primary-foreground/10 transition-all"
-                        >
-                            {{ $page.props.auth.user ? 'Ir al Dashboard' : 'Iniciar Sesión' }}
-                        </Link>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Footer -->
         <footer class="py-12 px-6 border-t border-border bg-accent/20">
             <div class="container mx-auto max-w-6xl">
@@ -255,35 +229,27 @@ function dashboard() {
                             <div class="p-2 bg-primary/10 rounded-lg">
                                 <UtensilsCrossed class="h-6 w-6 text-primary" />
                             </div>
-                            <h3 class="text-lg font-bold">FoodManager</h3>
+                            <h3 class="text-lg font-bold">Restaurante Tina</h3>
                         </div>
                         <p class="text-muted-foreground">
                             Sistema completo de gestión para negocios gastronómicos
                         </p>
                     </div>
+                    
                     <div>
-                        <h4 class="font-bold mb-4">Funcionalidades</h4>
+                        <h4 class="font-bold mb-4">Desarrolladores</h4>
                         <ul class="space-y-2 text-muted-foreground">
-                            <li>Gestión de Pedidos</li>
-                            <li>Control de Inventario</li>
-                            <li>Base de Clientes</li>
-                            <li>Reportes y Analytics</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold mb-4">Sistema</h4>
-                        <ul class="space-y-2 text-muted-foreground">
-                            <li>Laravel + Inertia.js</li>
-                            <li>Vue 3 + TypeScript</li>
-                            <li>PostgreSQL</li>
-                            <li>TailwindCSS</li>
+                            <li>Edith Georgina Sossa Castro</li>
+                            <li>Jose Luis Sossa Castro</li>
+                            <li>Jessica Rivero Morales </li>
+ 
                         </ul>
                     </div>
                 </div>
                 <div class="text-center pt-8 border-t border-border">
                     <VisitCounterBar class="mx-auto mb-6 max-w-4xl" />
                     <p class="text-muted-foreground">
-                        © 2025 FoodManager. Sistema de Gestión de Comidas.
+                        © 2025 Restaurante Tina. Sistema de Gestión de Comidas.
                     </p>
                 </div>
             </div>

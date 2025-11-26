@@ -84,7 +84,7 @@ const selectFontSize = (size: FontSize) => {
             >
                 <div
                     v-if="isModeMenuOpen"
-                    class="absolute right-0 top-full z-50 mt-2 w-48 rounded-lg border border-border bg-popover p-1 shadow-lg"
+                    class="absolute right-0 top-full z-50 mt-2 w-48 rounded-lg border border-border bg-background p-1 shadow-lg"
                     @click.stop
                 >
                     <button
@@ -128,7 +128,7 @@ const selectFontSize = (size: FontSize) => {
             >
                 <div
                     v-if="isThemeMenuOpen"
-                    class="absolute right-0 top-full z-50 mt-2 w-64 rounded-lg border border-border bg-popover p-2 shadow-lg"
+                    class="absolute right-0 top-full z-50 mt-2 w-64 rounded-lg border border-border bg-background p-2 shadow-lg"
                     @click.stop
                 >
                     <div class="mb-2 px-2 py-1">
@@ -185,7 +185,7 @@ const selectFontSize = (size: FontSize) => {
             >
                 <div
                     v-if="isAccessibilityMenuOpen"
-                    class="absolute right-0 top-full z-50 mt-2 w-64 rounded-lg border border-border bg-popover p-3 shadow-lg"
+                    class="absolute right-0 top-full z-50 mt-2 w-64 rounded-lg border border-border bg-background p-3 shadow-lg"
                     @click.stop
                 >
                     <!-- Tamaño de Fuente -->

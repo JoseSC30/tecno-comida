@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Food;
+use App\Models\Categoria;
+use App\Models\Producto;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -21,7 +21,7 @@ class SearchController extends Controller
         $operator = $this->likeOperator();
         $user = $request->user();
 
-        $foods = Food::query()
+        $products = Producto::query()
             ->with('category:cat_id,cat_nombre,cat_descripcion')
             ->where('pro_disponible', true)
             ->where(function ($query) use ($term, $operator) {
@@ -31,7 +31,7 @@ class SearchController extends Controller
             ->limit(5)
             ->get();
 
-        $categories = Category::query()
+        $categories = Categoria::query()
             ->where(function ($query) use ($term, $operator) {
                 $query->where('cat_nombre', $operator, "%{$term}%")
                     ->orWhere('cat_descripcion', $operator, "%{$term}%");
@@ -70,7 +70,7 @@ class SearchController extends Controller
         }
 
         return response()->json([
-            'productos' => $foods,
+            'productos' => $products,
             'categorias' => $categories,
             'pedidos' => $orders,
             'usuarios' => $users,

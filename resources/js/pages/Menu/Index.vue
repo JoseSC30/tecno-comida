@@ -14,6 +14,7 @@ const props = defineProps<{
         name: string;
         description: string;
         price: number;
+        image?: string;
         category: {
             id: number;
             name: string;
@@ -39,6 +40,7 @@ const handleAddToCart = (producto: typeof props.productos[0]) => {
         food_id: producto.id,
         name: producto.name,
         price: producto.price,
+        image: producto.image,
     });
     openCart();
 };
@@ -91,9 +93,10 @@ const breadcrumbs = [
                     :class="[
                         'whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium shadow transition',
                         selectedCategory === null
-                            ? 'bg-orange-600 text-white'
+                            ? 'text-white'
                             : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
                     ]"
+                    :style="selectedCategory === null ? 'background-color: #ec1c24' : ''"
                 >
                     Todas
                 </button>
@@ -104,9 +107,10 @@ const breadcrumbs = [
                     :class="[
                         'whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium shadow transition',
                         selectedCategory === categoria.id
-                            ? 'bg-orange-600 text-white'
+                            ? 'text-white'
                             : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
                     ]"
+                    :style="selectedCategory === categoria.id ? 'background-color: #ec1c24' : ''"
                 >
                     {{ categoria.name }} ({{ categoria.foods_count }})
                 </button>
@@ -119,7 +123,19 @@ const breadcrumbs = [
                     :key="producto.id"
                     class="overflow-hidden rounded-lg bg-white shadow transition hover:shadow-lg dark:bg-gray-800"
                 >
-                    <div class="aspect-video bg-gradient-to-br from-orange-400 to-red-500"></div>
+                    <div class="aspect-video relative overflow-hidden">
+                        <img 
+                            v-if="producto.image" 
+                            :src="`/storage/${producto.image}`" 
+                            :alt="producto.name"
+                            class="absolute inset-0 w-full h-full object-cover"
+                        />
+                        <div 
+                            v-else 
+                            class="absolute inset-0" 
+                            style="background: linear-gradient(135deg, #ec1c24 0%, #f54d55 50%, #ff9ea3 100%);"
+                        ></div>
+                    </div>
                     <div class="p-4">
                         <div class="mb-2 flex items-start justify-between">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
@@ -138,7 +154,8 @@ const breadcrumbs = [
                             </span>
                             <button
                                 @click="handleAddToCart(producto)"
-                                class="rounded bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-700 transition"
+                                class="rounded px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition"
+                                style="background-color: #ec1c24;"
                             >
                                 Agregar
                             </button>

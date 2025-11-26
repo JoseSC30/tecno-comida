@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Food extends Model
+class Producto extends Model
 {
     protected $table = 'productos';
     protected $primaryKey = 'pro_id';
 
+    public function getRouteKeyName(): string
+    {
+        return 'pro_id';
+    }
+
     protected $fillable = [
-        'name',
-        'description',
-        'price',
-        'image',
-        'available',
-        'category_id',
         'pro_nombre',
         'pro_descripcion',
         'pro_precioventa',
@@ -45,15 +45,19 @@ class Food extends Model
         'cat_id',
     ];
 
+
+       // Para que aparezcan en JSON
     protected $appends = [
         'id',
         'name',
         'description',
         'price',
+        'cost',
         'image',
         'available',
         'category_id',
     ];
+
 
     protected function id(): Attribute
     {
@@ -88,6 +92,16 @@ class Food extends Model
         );
     }
 
+    protected function cost(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => isset($this->attributes['pro_costounit'])
+                ? (float) $this->attributes['pro_costounit']
+                : null,
+            set: fn ($value) => ['pro_costounit' => $value],
+        );
+    }
+
     protected function image(): Attribute
     {
         return Attribute::make(
@@ -114,11 +128,17 @@ class Food extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'cat_id', 'cat_id');
+        return $this->belongsTo(Categoria::class, 'cat_id', 'cat_id');
     }
 
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class, 'pro_id', 'pro_id');
+    }
+
+    public function insumos(): BelongsToMany
+    {
+        return $this->belongsToMany(Insumo::class, 'receta', 'pro_id', 'ins_id')
+            ->withPivot('rec_cantidad', 'rec_unidad');
     }
 }

@@ -104,8 +104,13 @@ class OrderItem extends Model
         return $this->belongsTo(Order::class, 'ped_id', 'ped_id');
     }
 
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Producto::class, 'pro_id', 'pro_id');
+    }
+
     public function food(): BelongsTo
     {
-        return $this->belongsTo(Food::class, 'pro_id', 'pro_id');
+        return $this->product();
     }
 }

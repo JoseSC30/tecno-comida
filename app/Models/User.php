@@ -18,11 +18,6 @@ class User extends Authenticatable
     protected $primaryKey = 'usu_id';
 
     protected $fillable = [
-        'name',
-        'last_name',
-        'email',
-        'password',
-        'role_id',
         'usu_nombre',
         'usu_apellido',
         'usu_email',
@@ -39,6 +34,7 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
+        'id',
         'name',
         'last_name',
         'email',
@@ -50,6 +46,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'two_factor_confirmed_at' => 'datetime',
     ];
+
+    protected function id(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->attributes['usu_id'] ?? null,
+        );
+    }
 
     protected function name(): Attribute
     {
@@ -65,13 +68,6 @@ class User extends Authenticatable
                     'usu_apellido' => $apellido,
                 ];
             },
-        );
-    }
-
-    protected function id(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->attributes['usu_id'] ?? null,
         );
     }
 
@@ -107,39 +103,44 @@ class User extends Authenticatable
         );
     }
 
+    public function getRouteKeyName(): string
+    {
+        return 'usu_id';
+    }
+
     public function role()
     {
-        return $this->belongsTo(Role::class, 'rol_id', 'rol_id');
+        return $this->belongsTo(Rol::class, 'rol_id', 'rol_id');
     }
 
     public function isAdmin(): bool
     {
-        return $this->role?->rol_nombre === Role::ADMIN;
+        return $this->role?->rol_nombre === Rol::ADMIN;
     }
 
     public function isVendedor(): bool
     {
-        return $this->hasRole(Role::CAJERO) || $this->hasRole(Role::MESERO);
+        return $this->hasRole(Rol::CAJERO) || $this->hasRole(Rol::MESERO);
     }
 
     public function isCajero(): bool
     {
-        return $this->role?->rol_nombre === Role::CAJERO;
+        return $this->role?->rol_nombre === Rol::CAJERO;
     }
 
     public function isCocinero(): bool
     {
-        return $this->role?->rol_nombre === Role::COCINERO;
+        return $this->role?->rol_nombre === Rol::COCINERO;
     }
 
     public function isMesero(): bool
     {
-        return $this->role?->rol_nombre === Role::MESERO;
+        return $this->role?->rol_nombre === Rol::MESERO;
     }
 
     public function isCliente(): bool
     {
-        return $this->role?->rol_nombre === Role::CLIENTE;
+        return $this->role?->rol_nombre === Rol::CLIENTE;
     }
 
     public function hasRole(string $roleName): bool

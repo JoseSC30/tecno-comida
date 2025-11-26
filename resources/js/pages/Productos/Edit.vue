@@ -3,7 +3,6 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import InputError from '@/components/InputError.vue';
 import { Head, useForm, Link } from '@inertiajs/vue3';
 import { ArrowLeft } from 'lucide-vue-next';
@@ -16,6 +15,7 @@ const props = defineProps<{
         name: string;
         description: string;
         price: number;
+        cost: number;
         category_id: number;
         image: string;
         available: boolean;
@@ -33,6 +33,7 @@ const form = useForm({
     name: props.producto.name,
     description: props.producto.description || '',
     price: props.producto.price,
+    cost: props.producto.cost,
     category_id: props.producto.category_id,
     image: null as File | null,
     available: props.producto.available,
@@ -40,23 +41,25 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('foods.update', props.producto.id));
+    form.post(route('productos.update', props.producto.id), {
+        forceFormData: true,
+    });
 };
 
 const breadcrumbs = [
     { title: 'Dashboard', href: route('dashboard') },
-    { title: 'Comidas', href: route('foods.index') },
-    { title: 'Editar Comida', href: route('foods.edit', props.producto.id) },
+    { title: 'Productos', href: route('productos.index') },
+    { title: 'Editar Producto', href: route('productos.edit', props.producto.id) },
 ];
 </script>
 
 <template>
-    <Head title="Editar Comida" />
+    <Head title="Editar Producto" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-6">
             <Button variant="ghost" as-child class="mb-4">
-                <Link :href="route('foods.index')">
+                <Link :href="route('productos.index')">
                     <ArrowLeft class="mr-2 h-4 w-4" />
                     Volver
                 </Link>
@@ -65,7 +68,7 @@ const breadcrumbs = [
             <div class="mx-auto max-w-2xl">
                 <div class="rounded-lg bg-white p-6 shadow dark:bg-gray-800">
                     <h1 class="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">
-                        Editar Comida
+                        Editar Producto
                     </h1>
 
                     <form @submit.prevent="submit" class="space-y-6">
@@ -83,10 +86,10 @@ const breadcrumbs = [
 
                         <div>
                             <Label for="description">Descripción</Label>
-                            <Textarea
+                            <Input
                                 id="description"
                                 v-model="form.description"
-                                rows="3"
+                                type="text"
                                 class="mt-1"
                             />
                             <InputError :message="form.errors.description" class="mt-2" />
@@ -108,20 +111,33 @@ const breadcrumbs = [
                             </div>
 
                             <div>
-                                <Label for="category_id">Categoría *</Label>
-                                <select
-                                    id="category_id"
-                                    v-model="form.category_id"
-                                    class="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
-                                    required
-                                >
-                                    <option value="">Seleccionar categoría</option>
-                                    <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
-                                        {{ categoria.name }}
-                                    </option>
-                                </select>
-                                <InputError :message="form.errors.category_id" class="mt-2" />
+                                <Label for="cost">Costo (Bs.)</Label>
+                                <Input
+                                    id="cost"
+                                    v-model="form.cost"
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    class="mt-1"
+                                />
+                                <InputError :message="form.errors.cost" class="mt-2" />
                             </div>
+                        </div>
+
+                        <div>
+                            <Label for="category_id">Categoría *</Label>
+                            <select
+                                id="category_id"
+                                v-model="form.category_id"
+                                class="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+                                required
+                            >
+                                <option value="">Seleccionar categoría</option>
+                                <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
+                                    {{ categoria.name }}
+                                </option>
+                            </select>
+                            <InputError :message="form.errors.category_id" class="mt-2" />
                         </div>
 
                         <div>
@@ -160,10 +176,10 @@ const breadcrumbs = [
 
                         <div class="flex justify-end gap-4">
                             <Button type="button" variant="outline" as-child>
-                                <Link :href="route('foods.index')">Cancelar</Link>
+                                <Link :href="route('productos.index')">Cancelar</Link>
                             </Button>
                             <Button type="submit" :disabled="form.processing">
-                                {{ form.processing ? 'Guardando...' : 'Actualizar Comida' }}
+                                {{ form.processing ? 'Guardando...' : 'Actualizar Producto' }}
                             </Button>
                         </div>
                     </form>

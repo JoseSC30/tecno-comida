@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import VisitCounterBar from '@/components/VisitCounterBar.vue';
 import { home } from '@/routes';
 import { Link, usePage } from '@inertiajs/vue3';
+import { useTheme } from '@/composables/useTheme';
+import { computed } from 'vue';
 
 const page = usePage();
 const name = page.props.name;
 const quote = page.props.quote;
+
+const { effectiveMode } = useTheme();
+const logoSrc = computed(() => {
+    return effectiveMode.value === 'dark' ? '/images/Logo2.png' : '/images/Logo1.png';
+});
 
 defineProps<{
     title?: string;
@@ -26,7 +32,7 @@ defineProps<{
                 :href="home()"
                 class="relative z-20 flex items-center text-lg font-medium"
             >
-                <AppLogoIcon class="mr-2 size-8 fill-current text-white" />
+                <img :src="logoSrc" alt="Logo" class="mr-2 size-8 object-cover rounded-md" />
                 {{ name }}
             </Link>
             <div v-if="quote" class="relative z-20 mt-auto">

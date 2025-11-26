@@ -6,14 +6,13 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Category extends Model
+class Categoria extends Model
 {
     protected $table = 'categorias';
     protected $primaryKey = 'cat_id';
+    public $incrementing = true;
 
     protected $fillable = [
-        'name',
-        'description',
         'cat_nombre',
         'cat_descripcion',
     ];
@@ -53,8 +52,18 @@ class Category extends Model
         );
     }
 
+    public function products(): HasMany
+    {
+        return $this->hasMany(Producto::class, 'cat_id', 'cat_id');
+    }
+
     public function foods(): HasMany
     {
-        return $this->hasMany(Food::class, 'cat_id', 'cat_id');
+        return $this->products();
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'cat_id';
     }
 }

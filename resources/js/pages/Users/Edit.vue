@@ -13,13 +13,13 @@ const props = defineProps<{
     usuario: {
         id: number;
         name: string;
+        last_name: string;
         email: string;
         role_id: number;
     };
     roles: Array<{
         id: number;
         name: string;
-        description: string;
     }>;
 }>();
 
@@ -27,6 +27,7 @@ const usuario = computed(() => props.usuario);
 
 const form = useForm({
     name: props.usuario.name,
+    last_name: props.usuario.last_name,
     email: props.usuario.email,
     password: '',
     password_confirmation: '',
@@ -65,7 +66,7 @@ const breadcrumbs = [
 
                     <form @submit.prevent="submit" class="space-y-6">
                         <div>
-                            <Label for="name">Nombre completo *</Label>
+                            <Label for="name">Nombre *</Label>
                             <Input
                                 id="name"
                                 v-model="form.name"
@@ -75,6 +76,18 @@ const breadcrumbs = [
                                 autofocus
                             />
                             <InputError :message="form.errors.name" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <Label for="last_name">Apellido *</Label>
+                            <Input
+                                id="last_name"
+                                v-model="form.last_name"
+                                type="text"
+                                class="mt-1"
+                                required
+                            />
+                            <InputError :message="form.errors.last_name" class="mt-2" />
                         </div>
 
                         <div>
@@ -103,9 +116,6 @@ const breadcrumbs = [
                                 </option>
                             </select>
                             <InputError :message="form.errors.role_id" class="mt-2" />
-                            <p v-if="form.role_id" class="mt-1 text-sm text-gray-500">
-                                {{ roles.find(r => r.id == form.role_id)?.description }}
-                            </p>
                         </div>
 
                         <div class="border-t border-gray-200 pt-6 dark:border-gray-700">

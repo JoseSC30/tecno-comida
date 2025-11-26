@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 800">
+  <!-- Fondo degradado -->
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Patrón de nubes -->
+    <g id="cloud">
+      <ellipse cx="50" cy="30" rx="30" ry="20" fill="#fff" opacity="0.8"/>
+      <ellipse cx="70" cy="35" rx="35" ry="25" fill="#fff" opacity="0.8"/>
+      <ellipse cx="90" cy="30" rx="30" ry="20" fill="#fff" opacity="0.8"/>
+    </g>
+    
+    <!-- Estrella -->
+    <path id="star" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#FFD700" opacity="0.6"/>
+  </defs>
+  
+  <!-- Cielo -->
+  <rect width="1440" height="800" fill="url(#skyGradient)"/>
+  
+  <!-- Nubes -->
+  <use href="#cloud" x="100" y="50" transform="scale(1.2)"/>
+  <use href="#cloud" x="400" y="100" transform="scale(0.9)"/>
+  <use href="#cloud" x="800" y="70" transform="scale(1.1)"/>
+  <use href="#cloud" x="1100" y="90" transform="scale(1)"/>
+  <use href="#cloud" x="300" y="150" transform="scale(0.8)"/>
+  <use href="#cloud" x="1000" y="140" transform="scale(1.3)"/>
+  
+  <!-- Estrellas -->
+  <use href="#star" x="200" y="100" transform="scale(0.8)"/>
+  <use href="#star" x="600" y="50" transform="scale(0.6)"/>
+  <use href="#star" x="1200" y="120" transform="scale(0.7)"/>
+  <use href="#star" x="900" y="80" transform="scale(0.5)"/>
+  
+  <!-- Sol -->
+  <circle cx="1300" cy="120" r="60" fill="#FFA500" opacity="0.8"/>
+  <circle cx="1300" cy="120" r="50" fill="#FFD700"/>
+  
+  <!-- Rayos del sol -->
+  <line x1="1300" y1="50" x2="1300" y2="30" stroke="#FFA500" stroke-width="4" stroke-linecap="round"/>
+  <line x1="1300" y1="190" x2="1300" y2="210" stroke="#FFA500" stroke-width="4" stroke-linecap="round"/>
+  <line x1="1230" y1="120" x2="1210" y2="120" stroke="#FFA500" stroke-width="4" stroke-linecap="round"/>
+  <line x1="1370" y1="120" x2="1390" y2="120" stroke="#FFA500" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Colinas -->
+  <ellipse cx="300" cy="750" rx="400" ry="150" fill="#90EE90" opacity="0.7"/>
+  <ellipse cx="900" cy="780" rx="500" ry="180" fill="#7CFC00" opacity="0.6"/>
+  <ellipse cx="1200" cy="760" rx="350" ry="140" fill="#98FB98" opacity="0.7"/>
+  
+  <!-- Flores pequeñas -->
+  <circle cx="250" cy="720" r="8" fill="#FF69B4"/>
+  <circle cx="245" cy="715" r="5" fill="#FFB6C1"/>
+  <circle cx="255" cy="715" r="5" fill="#FFB6C1"/>
+  <circle cx="250" cy="710" r="5" fill="#FFB6C1"/>
+  <rect x="248" y="720" width="4" height="30" fill="#228B22"/>
+  
+  <circle cx="850" cy="740" r="8" fill="#FF1493"/>
+  <circle cx="845" cy="735" r="5" fill="#FFB6C1"/>
+  <circle cx="855" cy="735" r="5" fill="#FFB6C1"/>
+  <circle cx="850" cy="730" r="5" fill="#FFB6C1"/>
+  <rect x="848" y="740" width="4" height="30" fill="#228B22"/>
+  
+  <circle cx="1150" cy="730" r="8" fill="#FF69B4"/>
+  <circle cx="1145" cy="725" r="5" fill="#FFB6C1"/>
+  <circle cx="1155" cy="725" r="5" fill="#FFB6C1"/>
+  <circle cx="1150" cy="720" r="5" fill="#FFB6C1"/>
+  <rect x="1148" y="730" width="4" height="30" fill="#228B22"/>
+</svg>

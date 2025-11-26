@@ -1,13 +1,16 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\FoodController;
+use App\Http\Controllers\InsumoController;
+use App\Http\Controllers\MovimientoController;
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\RecetaController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
-use App\Models\Role;
+use App\Models\Rol;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -39,28 +42,32 @@ Route::middleware(['auth'])->group(function () {
     Route::get('search', SearchController::class)->name('search.global');
     
     // Rutas para Administrador
-    Route::middleware(['role:' . Role::ADMIN])->prefix('admin')->group(function () {
+    Route::middleware(['role:' . Rol::ADMIN])->prefix('admin')->group(function () {
         Route::resource('users', UserController::class);
-        Route::resource('foods', FoodController::class);
-        Route::resource('categories', CategoryController::class);
+        Route::resource('productos', ProductoController::class);
+        Route::resource('categorias', CategoriaController::class);
+        Route::resource('insumos', InsumoController::class);
+        Route::resource('movimientos', MovimientoController::class)->only(['index', 'create', 'store']);
+        Route::get('productos/{producto}/receta', [RecetaController::class, 'edit'])->name('recetas.edit');
+        Route::put('productos/{producto}/receta', [RecetaController::class, 'update'])->name('recetas.update');
         Route::put('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
     });
     
     // Rutas para Vendedor
-    Route::middleware(['role:' . Role::VENDEDOR . ',' . Role::ADMIN])->prefix('seller')->group(function () {
-        Route::resource('foods', FoodController::class)->names([
-            'index' => 'seller.foods.index',
-            'create' => 'seller.foods.create',
-            'store' => 'seller.foods.store',
-            'edit' => 'seller.foods.edit',
-            'update' => 'seller.foods.update',
-            'destroy' => 'seller.foods.destroy',
+    Route::middleware(['role:' . Rol::VENDEDOR . ',' . Rol::ADMIN])->prefix('seller')->group(function () {
+        Route::resource('productos', ProductoController::class)->names([
+            'index' => 'seller.productos.index',
+            'create' => 'seller.productos.create',
+            'store' => 'seller.productos.store',
+            'edit' => 'seller.productos.edit',
+            'update' => 'seller.productos.update',
+            'destroy' => 'seller.productos.destroy',
         ]);
-        Route::resource('categories', CategoryController::class)->names([
-            'index' => 'seller.categories.index',
-            'store' => 'seller.categories.store',
-            'update' => 'seller.categories.update',
-            'destroy' => 'seller.categories.destroy',
+        Route::resource('categorias', CategoriaController::class)->names([
+            'index' => 'seller.categorias.index',
+            'store' => 'seller.categorias.store',
+            'update' => 'seller.categorias.update',
+            'destroy' => 'seller.categorias.destroy',
         ]);
         Route::put('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('seller.orders.updateStatus');
     });

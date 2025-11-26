@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Role;
+use App\Models\Rol;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,9 +11,9 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        $adminRole = Role::where('name', Role::ADMIN)->first();
-        $vendedorRole = Role::where('name', Role::VENDEDOR)->first();
-        $clienteRole = Role::where('name', Role::CLIENTE)->first();
+        $adminRole = Rol::where('name', Rol::ADMIN)->first();
+        $vendedorRole = Rol::where('name', Rol::VENDEDOR)->first();
+        $clienteRole = Rol::where('name', Rol::CLIENTE)->first();
 
         // Usuario Administrador
         User::create([

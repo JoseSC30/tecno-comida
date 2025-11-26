@@ -7,40 +7,43 @@ import { computed } from 'vue';
 import { route } from 'ziggy-js';
 
 const props = defineProps<{
-    productos: Array<{
+    insumos: Array<{
         id: number;
         name: string;
-        description: string;
-        price: number;
-        available: boolean;
-        category: {
-            id: number;
-            name: string;
-        };
+        unidad: string;
+        stock: number;
     }>;
 }>();
 
-const productos = computed(() => props.productos);
+const insumos = computed(() => props.insumos);
 
 const breadcrumbs = [
     { title: 'Dashboard', href: route('dashboard') },
-    { title: 'Comidas', href: route('foods.index') },
+    { title: 'Insumos', href: route('insumos.index') },
 ];
+
+const deleteInsumo = (insumo: any) => {
+    if (confirm('¿Estás seguro de eliminar este insumo?')) {
+        router.delete(route('insumos.destroy', insumo.id), {
+            preserveScroll: true,
+        });
+    }
+};
 </script>
 
 <template>
-    <Head title="Gestionar Comidas" />
+    <Head title="Gestionar Insumos" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-6">
             <div class="mb-6 flex items-center justify-between">
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                    Gestionar Comidas
+                    Gestionar Insumos
                 </h1>
                 <Button as-child>
-                    <Link :href="route('foods.create')">
+                    <Link :href="route('insumos.create')">
                         <Plus class="mr-2 h-4 w-4" />
-                        Nueva Comida
+                        Nuevo Insumo
                     </Link>
                 </Button>
             </div>
@@ -53,13 +56,10 @@ const breadcrumbs = [
                                 Nombre
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                                Categoría
+                                Unidad
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                                Precio
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                                Estado
+                                Stock
                             </th>
                             <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
                                 Acciones
@@ -67,47 +67,29 @@ const breadcrumbs = [
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                        <tr v-for="producto in productos" :key="producto.id">
-                            <td class="whitespace-nowrap px-6 py-4">
-                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                    {{ producto.name }}
-                                </div>
-                                <div class="text-sm text-gray-500 dark:text-gray-400">
-                                    {{ producto.description?.substring(0, 50) }}...
-                                </div>
+                        <tr v-for="insumo in insumos" :key="insumo.id">
+                            <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                {{ insumo.name }}
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
-                                {{ producto.category.name }}
+                                {{ insumo.unidad }}
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
-                                Bs. {{ producto.price }}
-                            </td>
-                            <td class="whitespace-nowrap px-6 py-4">
-                                <span
-                                    class="inline-flex rounded-full px-2 text-xs font-semibold leading-5"
-                                    :class="producto.available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
-                                >
-                                    {{ producto.available ? 'Disponible' : 'No disponible' }}
-                                </span>
+                                {{ insumo.stock }}
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                                 <Button variant="ghost" size="sm" as-child class="mr-2">
-                                    <Link :href="route('foods.edit', producto.id)">
+                                    <Link :href="route('insumos.edit', insumo.id)">
                                         <Pencil class="h-4 w-4" />
                                     </Link>
                                 </Button>
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    as="button"
-                                    @click="() => {
-                                        if (window.confirm('¿Estás seguro de eliminar esta comida?')) {
-                                            router.delete(route('foods.destroy', producto.id));
-                                        }
-                                    }"
+                                <button
+                                    type="button"
+                                    class="inline-flex items-center justify-center rounded-md p-2 text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    @click="deleteInsumo(insumo)"
                                 >
                                     <Trash2 class="h-4 w-4 text-red-600" />
-                                </Button>
+                                </button>
                             </td>
                         </tr>
                     </tbody>

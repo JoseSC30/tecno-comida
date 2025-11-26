@@ -6,14 +6,21 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Role extends Model
+class Rol extends Model
 {
     protected $table = 'roles';
     protected $primaryKey = 'rol_id';
     public $timestamps = false;
 
-    protected $fillable = ['rol_nombre', 'name'];
-    protected $appends = ['name'];
+    protected $fillable = ['rol_nombre',];
+    protected $appends = ['name', 'id'];
+
+    protected function id(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->attributes['rol_id'] ?? null,
+        );
+    }
 
     protected function name(): Attribute
     {

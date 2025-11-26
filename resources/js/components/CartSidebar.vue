@@ -76,7 +76,16 @@ const checkout = () => {
                         >
                             <!-- Image -->
                             <div class="h-20 w-20 flex-shrink-0 overflow-hidden rounded bg-gray-100">
-                                <div class="h-full w-full bg-gradient-to-br from-orange-400 to-red-500" />
+                                <img
+                                    v-if="item.image"
+                                    :src="`/storage/${item.image}`"
+                                    :alt="item.name"
+                                    class="h-full w-full object-cover"
+                                />
+                                <div
+                                    v-else
+                                    class="h-full w-full bg-gradient-to-br from-[#ec1c24] to-[#ff9ea3]"
+                                />
                             </div>
 
                             <!-- Info -->
@@ -84,7 +93,7 @@ const checkout = () => {
                                 <h3 class="font-medium text-gray-900 dark:text-gray-100">
                                     {{ item.name }}
                                 </h3>
-                                <p class="text-sm font-semibold text-orange-600">
+                                <p class="text-sm font-semibold text-orange-600" style="color: #ec1c24;">
                                     Bs. {{ item.price }}
                                 </p>
 
