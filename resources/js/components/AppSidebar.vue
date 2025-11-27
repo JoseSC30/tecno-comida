@@ -22,35 +22,46 @@ const page = usePage();
 const user = computed(() => page.props.auth.user);
 
 const mainNavItems = computed((): NavItem[] => {
-    const items: NavItem[] = [
-        {
-            title: 'Dashboard',
-            href: route('dashboard'),
-            icon: LayoutGrid,
-        },
-        {
-            title: 'Menú',
-            href: route('menu'),
-            icon: UtensilsCrossed,
-        },
-        {
-            title: 'Mis Pedidos',
-            href: route('orders.index'),
-            icon: ShoppingBag,
-        },
-        {
-            title: 'Reservar Mesa',
-            href: route('reservas.index'),
-            icon: CalendarDays,
-        },
-        {
-            title: 'Mis Reservas',
-            href: route('reservas.list'),
-            icon: ClipboardList,
-        },
-    ];
+    const items: NavItem[] = [];
 
-    // Admin: acceso completo
+    // Dashboard - Todos tienen acceso
+    items.push({
+        title: 'Dashboard',
+        href: route('dashboard'),
+        icon: LayoutGrid,
+    });
+
+    // Menú - Todos tienen acceso
+    items.push({
+        title: 'Menú',
+        href: route('menu'),
+        icon: UtensilsCrossed,
+    });
+
+    // Mis Pedidos - Todos tienen acceso
+    items.push({
+        title: 'Mis Pedidos',
+        href: route('orders.index'),
+        icon: ShoppingBag,
+    });
+
+    // Reservas - Solo Admin, Cajero y Cliente
+    if (user.value?.is_admin || user.value?.is_cajero || user.value?.is_cliente) {
+        items.push(
+            {
+                title: 'Reservar Mesa',
+                href: route('reservas.index'),
+                icon: CalendarDays,
+            },
+            {
+                title: 'Mis Reservas',
+                href: route('reservas.list'),
+                icon: ClipboardList,
+            }
+        );
+    }
+
+    // Admin: acceso completo a gestión
     if (user.value?.is_admin) {
         items.push(
             {
@@ -81,13 +92,13 @@ const mainNavItems = computed((): NavItem[] => {
         );
     }
 
-    // Vendedor: gestión de productos y pedidos
-    if (user.value?.is_vendedor && !user.value?.is_admin) {
+    // Cajero: todo menos usuarios
+    if (user.value?.is_cajero && !user.value?.is_admin) {
         items.push(
             {
                 title: 'Gestionar Productos',
                 href: route('seller.productos.index'),
-                icon: Package,
+                icon: UtensilsCrossed,
             },
             {
                 title: 'Categorías',

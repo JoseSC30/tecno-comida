@@ -101,6 +101,12 @@ class ReservaController extends Controller
 
         $validated = $request->validate($rules);
 
+        // Si el usuario es cliente, forzar que la reserva sea para sí mismo
+        $user = $request->user();
+        if ($user->isCliente()) {
+            $validated['cliente_id'] = $user->id;
+        }
+
         // Check if table is available
         $isReserved = Reserva::where('mes_id', $validated['mes_id'])
             ->where('res_fecha', $validated['fecha'])

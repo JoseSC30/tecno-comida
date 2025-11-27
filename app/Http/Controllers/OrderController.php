@@ -91,8 +91,14 @@ class OrderController extends Controller
                 ];
             }
 
-            // Si no se seleccionó cliente, usar el usuario autenticado
-            $userId = $validated['cliente_id'] ?? $request->user()->id;
+            // Si el usuario es cliente, forzar que el pedido sea para sí mismo
+            $user = $request->user();
+            if ($user->isCliente()) {
+                $userId = $user->id;
+            } else {
+                // Si no se seleccionó cliente, usar el usuario autenticado
+                $userId = $validated['cliente_id'] ?? $user->id;
+            }
 
             $order = Order::create([
                 'user_id' => $userId,

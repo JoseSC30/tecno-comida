@@ -40,12 +40,14 @@ const props = defineProps<{
 
 const page = usePage();
 const currentUser = computed(() => page.props.auth?.user);
+const isCliente = computed(() => currentUser.value?.is_cliente);
 
 // Estado del formulario
 const selectedMesa = ref<Mesa | null>(null);
 const selectedDate = ref('');
 const selectedTime = ref('');
 const selectedPersonas = ref(2);
+// Solo Admin y Cajero pueden seleccionar otro cliente
 const selectedClienteId = ref<number | null>(null);
 const notas = ref('');
 const activeTab = ref<'efectivo' | 'qr'>('efectivo');
@@ -523,7 +525,8 @@ const breadcrumbs = [
                                         </option>
                                     </select>
                                 </div>
-                                <div>
+                                <!-- Selector de cliente - Solo visible para Admin y Cajero -->
+                                <div v-if="!isCliente">
                                     <Label for="cliente">Cliente (opcional)</Label>
                                     <select
                                         id="cliente"
@@ -535,6 +538,15 @@ const breadcrumbs = [
                                             {{ cliente.name }}
                                         </option>
                                     </select>
+                                </div>
+                                <!-- Info para cliente - muestra que la reserva se hará a su nombre -->
+                                <div v-else class="rounded-lg bg-blue-50 p-3 dark:bg-blue-900/20">
+                                    <div class="flex items-center gap-2">
+                                        <User class="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                                        <span class="text-sm text-blue-700 dark:text-blue-300">
+                                            Reserva a nombre de: <strong>{{ currentUser?.name }}</strong>
+                                        </span>
+                                    </div>
                                 </div>
                                 <div class="md:col-span-2">
                                     <Label for="notas">Notas adicionales</Label>

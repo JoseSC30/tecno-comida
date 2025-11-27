@@ -35,35 +35,41 @@ Route::middleware(['auth'])->group(function () {
     // Menú público para todos los usuarios autenticados
     Route::get('menu', [MenuController::class, 'index'])->name('menu');
     
-    // Checkout
-    Route::get('checkout', [OrderController::class, 'checkout'])->name('checkout');
+    // Checkout - todos menos cocinero
+    Route::middleware(['role:' . Rol::ADMIN . ',' . Rol::CAJERO . ',' . Rol::MESERO . ',' . Rol::CLIENTE])
+        ->get('checkout', [OrderController::class, 'checkout'])->name('checkout');
     
-    // Pedidos - todos pueden crear y ver sus pedidos
-    Route::resource('orders', OrderController::class)->only(['index', 'show', 'store']);
+    // Pedidos - todos pueden ver sus pedidos
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('orders', [OrderController::class, 'store'])->name('orders.store');
 
-    // Reservas - Gestión de reservas de mesa
-    Route::prefix('reservas')->group(function () {
-        Route::get('/', [ReservaController::class, 'index'])->name('reservas.index');
-        Route::post('/availability', [ReservaController::class, 'getAvailability'])->name('reservas.availability');
-        Route::post('/store', [ReservaController::class, 'store'])->name('reservas.store');
-        Route::get('/list', [ReservaController::class, 'list'])->name('reservas.list');
-        Route::patch('/{reserva}/status', [ReservaController::class, 'updateStatus'])->name('reservas.updateStatus');
-        Route::delete('/{reserva}/cancel', [ReservaController::class, 'cancel'])->name('reservas.cancel');
-        Route::post('/{id}/pay-second-installment', [ReservaController::class, 'paySecondInstallment'])->name('reservas.paySecondInstallment');
-    });
+    // Reservas - Solo Admin, Cajero y Cliente pueden acceder
+    Route::middleware(['role:' . Rol::ADMIN . ',' . Rol::CAJERO . ',' . Rol::CLIENTE])
+        ->prefix('reservas')->group(function () {
+            Route::get('/', [ReservaController::class, 'index'])->name('reservas.index');
+            Route::post('/availability', [ReservaController::class, 'getAvailability'])->name('reservas.availability');
+            Route::post('/store', [ReservaController::class, 'store'])->name('reservas.store');
+            Route::get('/list', [ReservaController::class, 'list'])->name('reservas.list');
+            Route::patch('/{reserva}/status', [ReservaController::class, 'updateStatus'])->name('reservas.updateStatus');
+            Route::delete('/{reserva}/cancel', [ReservaController::class, 'cancel'])->name('reservas.cancel');
+            Route::post('/{id}/pay-second-installment', [ReservaController::class, 'paySecondInstallment'])->name('reservas.paySecondInstallment');
+        });
 
-    // PagoFácil - Rutas para pago QR
-    Route::prefix('pagofacil')->group(function () {
-        Route::post('generate-qr', [PagoFacilController::class, 'generateQr'])->name('pagofacil.generateQr');
-        Route::post('query-transaction', [PagoFacilController::class, 'queryTransaction'])->name('pagofacil.queryTransaction');
-        Route::post('callback-status', [PagoFacilController::class, 'getCallbackStatus'])->name('pagofacil.callbackStatus');
-        Route::post('transaction-data', [PagoFacilController::class, 'getTransactionData'])->name('pagofacil.transactionData');
-    });
+    // PagoFácil - Rutas para pago QR (todos menos cocinero)
+    Route::middleware(['role:' . Rol::ADMIN . ',' . Rol::CAJERO . ',' . Rol::MESERO . ',' . Rol::CLIENTE])
+        ->prefix('pagofacil')->group(function () {
+            Route::post('generate-qr', [PagoFacilController::class, 'generateQr'])->name('pagofacil.generateQr');
+            Route::post('query-transaction', [PagoFacilController::class, 'queryTransaction'])->name('pagofacil.queryTransaction');
+            Route::post('callback-status', [PagoFacilController::class, 'getCallbackStatus'])->name('pagofacil.callbackStatus');
+            Route::post('transaction-data', [PagoFacilController::class, 'getTransactionData'])->name('pagofacil.transactionData');
+        });
 
-    // Búsqueda global
-    Route::get('search', SearchController::class)->name('search.global');
+    // Búsqueda global - Admin y Cajero
+    Route::middleware(['role:' . Rol::ADMIN . ',' . Rol::CAJERO])
+        ->get('search', SearchController::class)->name('search.global');
     
-    // Rutas para Administrador
+    // Rutas para Administrador (acceso total)
     Route::middleware(['role:' . Rol::ADMIN])->prefix('admin')->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('productos', ProductoController::class);
@@ -75,8 +81,8 @@ Route::middleware(['auth'])->group(function () {
         Route::put('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
     });
     
-    // Rutas para Vendedor
-    Route::middleware(['role:' . Rol::VENDEDOR . ',' . Rol::ADMIN])->prefix('seller')->group(function () {
+    // Rutas para Cajero (todo menos usuarios)
+    Route::middleware(['role:' . Rol::CAJERO . ',' . Rol::ADMIN])->prefix('seller')->group(function () {
         Route::resource('productos', ProductoController::class)->names([
             'index' => 'seller.productos.index',
             'create' => 'seller.productos.create',

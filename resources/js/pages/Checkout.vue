@@ -20,6 +20,7 @@ const props = defineProps<{
 
 const page = usePage();
 const currentUser = computed(() => page.props.auth?.user);
+const isCliente = computed(() => currentUser.value?.is_cliente);
 
 const { cartItems, total, clearCart } = useCart();
 
@@ -300,11 +301,12 @@ const breadcrumbs = [
                                 <div class="mb-4 flex items-center gap-2">
                                     <User class="h-5 w-5 text-orange-600" />
                                     <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                                        Seleccionar Cliente
+                                        {{ isCliente ? 'Datos del Pedido' : 'Seleccionar Cliente' }}
                                     </h2>
                                 </div>
                                 <div class="space-y-4">
-                                    <div>
+                                    <!-- Selector de cliente - Solo visible para Admin y Cajero -->
+                                    <div v-if="!isCliente">
                                         <Label for="cliente">Cliente</Label>
                                         <select
                                             id="cliente"
@@ -324,20 +326,29 @@ const breadcrumbs = [
                                             {{ form.errors.cliente_id }}
                                         </p>
                                     </div>
+                                    <!-- Info para cliente - muestra que el pedido se hará a su nombre -->
+                                    <div v-else class="rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
+                                        <div class="flex items-center gap-2">
+                                            <User class="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                            <span class="text-sm text-blue-700 dark:text-blue-300">
+                                                Pedido a nombre de: <strong>{{ currentUser?.name }}</strong>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Contenido de Pago QR (vacío por ahora) -->
+                            <!-- Contenido de Pago QR -->
                             <div v-show="activeTab === 'qr'" class="p-6">
-                                <!-- Selección de cliente para QR -->
+                                <!-- Selección de cliente para QR - Solo visible para Admin y Cajero -->
                                 <div class="mb-6">
                                     <div class="mb-4 flex items-center gap-2">
                                         <User class="h-5 w-5 text-orange-600" />
                                         <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                                            Seleccionar Cliente
+                                            {{ isCliente ? 'Datos del Pedido' : 'Seleccionar Cliente' }}
                                         </h2>
                                     </div>
-                                    <div>
+                                    <div v-if="!isCliente">
                                         <Label for="cliente-qr">Cliente</Label>
                                         <select
                                             id="cliente-qr"
@@ -354,6 +365,15 @@ const breadcrumbs = [
                                                 {{ cliente.name }}
                                             </option>
                                         </select>
+                                    </div>
+                                    <!-- Info para cliente -->
+                                    <div v-else class="rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
+                                        <div class="flex items-center gap-2">
+                                            <User class="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                            <span class="text-sm text-blue-700 dark:text-blue-300">
+                                                Pedido a nombre de: <strong>{{ currentUser?.name }}</strong>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
 
