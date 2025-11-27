@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useTheme } from '@/composables/useTheme';
+import { asset } from '@/utils/asset';
 import { computed } from 'vue';
 
 const { effectiveMode } = useTheme();
 
 const logoSrc = computed(() => {
-    return effectiveMode.value === 'dark' ? '/images/Logo2.png' : '/images/Logo1.png';
+    return effectiveMode.value === 'dark' ? asset('images/Logo2.png') : asset('images/Logo1.png');
 });
 </script>
 

@@ -36,6 +36,7 @@ import { InertiaLinkProps, Link, usePage } from '@inertiajs/vue3';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { useTheme } from '@/composables/useTheme';
+import { asset } from '@/utils/asset';
 
 interface Props {
     breadcrumbs?: BreadcrumbItem[];
@@ -50,7 +51,7 @@ const auth = computed(() => page.props.auth);
 
 const { effectiveMode } = useTheme();
 const logoSrc = computed(() => {
-    return effectiveMode.value === 'dark' ? '/images/Logo2.png' : '/images/Logo1.png';
+    return effectiveMode.value === 'dark' ? asset('images/Logo2.png') : asset('images/Logo1.png');
 });
 
 const isCurrentRoute = computed(

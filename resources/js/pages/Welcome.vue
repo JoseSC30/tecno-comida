@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import VisitCounterBar from '@/components/VisitCounterBar.vue';
 import { useTheme } from '@/composables/useTheme';
+import { asset } from '@/utils/asset';
 import { Head, Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 import { UtensilsCrossed, ShoppingCart, ChefHat, Users, BarChart3, Clock } from 'lucide-vue-next';
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 
 defineOptions({ layout: null });
 
@@ -29,6 +30,10 @@ function register() {
 function dashboard() {
     return route('dashboard');
 }
+
+const logoSrc = computed(() => {
+    return effectiveMode.value === 'dark' ? asset('images/Logo2.png') : asset('images/Logo1.png');
+});
 </script>
 
 <template>
@@ -102,7 +107,7 @@ function dashboard() {
                     <!-- Logo Grande -->
                     <div class="flex items-center justify-center lg:col-span-1">
                         <img 
-                            :src="effectiveMode === 'dark' ? '/images/Logo2.png' : '/images/Logo1.png'" 
+                            :src="logoSrc" 
                             alt="Logo Restaurante Tina" 
                             class="w-120 h-120 object-contain"
                         />

@@ -11,6 +11,7 @@ import { store } from '@/routes/login';
 import { Form, Head } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 import { useTheme } from '@/composables/useTheme';
+import { asset } from '@/utils/asset';
 import { computed } from 'vue';
 
 defineProps<{
@@ -21,7 +22,7 @@ defineProps<{
 
 const { effectiveMode } = useTheme();
 const logoSrc = computed(() => {
-    return effectiveMode.value === 'dark' ? '/images/Logo2.png' : '/images/Logo1.png';
+    return effectiveMode.value === 'dark' ? asset('images/Logo2.png') : asset('images/Logo1.png');
 });
 
 const loginForm = store.form();

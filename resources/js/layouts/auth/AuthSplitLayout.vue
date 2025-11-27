@@ -3,6 +3,7 @@ import VisitCounterBar from '@/components/VisitCounterBar.vue';
 import { home } from '@/routes';
 import { Link, usePage } from '@inertiajs/vue3';
 import { useTheme } from '@/composables/useTheme';
+import { asset } from '@/utils/asset';
 import { computed } from 'vue';
 
 const page = usePage();
@@ -11,7 +12,7 @@ const quote = page.props.quote;
 
 const { effectiveMode } = useTheme();
 const logoSrc = computed(() => {
-    return effectiveMode.value === 'dark' ? '/images/Logo2.png' : '/images/Logo1.png';
+    return effectiveMode.value === 'dark' ? asset('images/Logo2.png') : asset('images/Logo1.png');
 });
 
 defineProps<{
