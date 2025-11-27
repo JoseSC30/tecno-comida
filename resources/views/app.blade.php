@@ -41,7 +41,7 @@
             window.__APP_URL__ = "{{ rtrim(config('app.url'), '/') }}";
         </script>
 
-        @routes
+        @routes(nonce: null, url: config('app.url'))
         @vite(['resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
         @inertiaHead
     </head>
