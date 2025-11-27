@@ -8,6 +8,7 @@ import { Head, useForm, Link } from '@inertiajs/vue3';
 import { ArrowLeft } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { route } from 'ziggy-js';
+import { asset } from '@/utils/asset';
 
 const props = defineProps<{
     producto: {
@@ -143,7 +144,7 @@ const breadcrumbs = [
                         <div>
                             <Label>Imagen actual</Label>
                             <div v-if="producto.image" class="mt-2">
-                                <img :src="`/storage/${producto.image}`" alt="Imagen actual" class="h-32 w-32 rounded object-cover" />
+                                <img :src="asset(`storage/${producto.image}`)" alt="Imagen actual" class="h-32 w-32 rounded object-cover" />
                             </div>
                             <div v-else class="mt-2 text-sm text-gray-500">Sin imagen</div>
                         </div>

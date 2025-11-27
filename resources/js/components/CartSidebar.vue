@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { X, Minus, Plus, Trash2, ShoppingCart } from 'lucide-vue-next';
 import { router } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import { asset } from '@/utils/asset';
 
 const { cartItems, isCartOpen, closeCart, incrementQuantity, decrementQuantity, removeFromCart, total, itemCount, clearCart } = useCart();
 
@@ -78,7 +79,7 @@ const checkout = () => {
                             <div class="h-20 w-20 flex-shrink-0 overflow-hidden rounded bg-gray-100">
                                 <img
                                     v-if="item.image"
-                                    :src="`/storage/${item.image}`"
+                                    :src="asset(`storage/${item.image}`)"
                                     :alt="item.name"
                                     class="h-full w-full object-cover"
                                 />

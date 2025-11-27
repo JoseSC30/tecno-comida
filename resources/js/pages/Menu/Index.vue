@@ -7,6 +7,7 @@ import CartSidebar from '@/components/CartSidebar.vue';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-vue-next';
 import { route } from 'ziggy-js';
+import { asset } from '@/utils/asset';
 
 const props = defineProps<{
     productos: Array<{
@@ -126,7 +127,7 @@ const breadcrumbs = [
                     <div class="aspect-video relative overflow-hidden">
                         <img 
                             v-if="producto.image" 
-                            :src="`/storage/${producto.image}`" 
+                            :src="asset(`storage/${producto.image}`)" 
                             :alt="producto.name"
                             class="absolute inset-0 w-full h-full object-cover"
                         />
