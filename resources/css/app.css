@@ -659,7 +659,7 @@ html.theme-kids {
 }
 
 html.theme-kids body {
-    background-image: url('/images/kids-bg-pattern.svg');
+    background-image: var(--kids-bg-image);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -670,7 +670,7 @@ html.theme-kids body {
 html.theme-kids.dark body {
     background-image: 
         linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-        url('/images/kids-bg-pattern.svg');
+        var(--kids-bg-image);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -712,7 +712,7 @@ html.theme-kids.dark .bg-card {
    TEMA JUVENIL - FONDO Y ESTILOS
    ============================================== */
 html.theme-youth body {
-    background-image: url('/images/juvenil.png');
+    background-image: var(--youth-bg-image);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -723,7 +723,7 @@ html.theme-youth body {
 html.theme-youth.dark body {
     background-image: 
         linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-        url('/images/juvenil.png');
+        var(--youth-bg-image);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

@@ -23,6 +23,9 @@
         <style>
             html {
                 background-color: oklch(1 0 0);
+                --app-url: "{{ rtrim(config('app.url'), '/') }}";
+                --kids-bg-image: url("{{ rtrim(config('app.url'), '/') }}/images/kids-bg-pattern.svg");
+                --youth-bg-image: url("{{ rtrim(config('app.url'), '/') }}/images/juvenil.png");
             }
 
             html.dark {
