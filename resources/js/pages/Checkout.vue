@@ -51,7 +51,8 @@ const pollingActive = ref(false);
 
 const form = useForm({
     cliente_id: null as number | null,
-    items: [] as Array<{ food_id: number; quantity: number; price: number }>
+    items: [] as Array<{ food_id: number; quantity: number; price: number }>,
+    metodo_pago: 'efectivo' as 'efectivo' | 'qr'
 });
 
 const submit = () => {
@@ -60,6 +61,7 @@ const submit = () => {
         quantity: item.quantity,
         price: item.price
     }));
+    form.metodo_pago = 'efectivo';
     
     form.post(route('orders.store'), {
         onSuccess: () => {
@@ -190,6 +192,7 @@ const confirmQrOrder = () => {
         quantity: item.quantity,
         price: item.price
     }));
+    form.metodo_pago = 'qr';
     
     form.post(route('orders.store'), {
         onSuccess: () => {

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Producto;
+use App\Models\Pago;
+use App\Models\DetallePago;
 use App\Http\Requests\OrderRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -69,9 +71,10 @@ class OrderController extends Controller
             'items' => 'required|array|min:1',
             'items.*.food_id' => 'required|exists:productos,pro_id',
             'items.*.quantity' => 'required|integer|min:1',
+            'metodo_pago' => 'nullable|in:efectivo,qr',
         ]);
 
-        DB::transaction(function () use ($request, $validated) {
+        $order = DB::transaction(function () use ($request, $validated) {
             $total = 0;
             $orderItems = [];
 
@@ -101,6 +104,18 @@ class OrderController extends Controller
             foreach ($orderItems as $orderItem) {
                 $order->items()->create($orderItem);
             }
+
+            // Registrar el pago en las tablas pagos y detalle_pagos
+            $metodoPago = $validated['metodo_pago'] ?? 'efectivo';
+            $metodoPagoDb = $metodoPago === 'qr' ? Pago::METODO_QR : Pago::METODO_EFECTIVO;
+            
+            DetallePago::registrarPago(
+                $order->ped_id,
+                $metodoPagoDb,
+                $total
+            );
+
+            return $order;
         });
 
         return redirect()->route('orders.index')->with('success', 'Pedido creado exitosamente');

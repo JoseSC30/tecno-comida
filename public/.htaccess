@@ -4,6 +4,9 @@
     </IfModule>
 
     RewriteEngine On
+    
+    # Set base path for subdirectory deployment
+    RewriteBase /inf513/grupo22sc/proyecto2/public/
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
@@ -24,8 +27,8 @@
     RewriteRule ^ index.php [L]
 </IfModule>
 
-# Aumentar límites de PHP para subida de imágenes
-php_value upload_max_filesize 50M
-php_value post_max_size 50M
-php_value memory_limit 256M
+# Aumentar límites de PHP para subida de imágenes (comentado por compatibilidad)
+# php_value upload_max_filesize 50M
+# php_value post_max_size 50M
+# php_value memory_limit 256M
 php_value max_execution_time 300
