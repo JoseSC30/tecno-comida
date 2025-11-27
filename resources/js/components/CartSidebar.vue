@@ -41,7 +41,7 @@ const checkout = () => {
     >
         <div
             v-if="isCartOpen"
-            class="fixed right-0 top-0 z-50 h-full w-full max-w-md bg-white shadow-xl dark:bg-gray-800"
+            class="fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col bg-white shadow-xl dark:bg-gray-800"
         >
             <!-- Header -->
             <div class="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-700">
@@ -57,7 +57,7 @@ const checkout = () => {
             </div>
 
             <!-- Cart Items -->
-            <div class="flex h-full flex-col">
+            <div class="flex flex-1 flex-col overflow-hidden">
                 <div v-if="cartItems.length === 0" class="flex flex-1 items-center justify-center p-8">
                     <div class="text-center">
                         <ShoppingCart class="mx-auto h-16 w-16 text-gray-400" />

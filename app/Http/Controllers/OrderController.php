@@ -13,6 +13,23 @@ use Inertia\Response;
 
 class OrderController extends Controller
 {
+    public function checkout(Request $request): Response
+    {
+        $clienteRolId = \App\Models\Rol::where('rol_nombre', \App\Models\Rol::CLIENTE)->value('rol_id');
+        
+        $users = \App\Models\User::where('rol_id', $clienteRolId)
+            ->orderBy('usu_nombre')
+            ->get()
+            ->map(fn($user) => [
+                'id' => $user->id,
+                'name' => $user->full_name,
+            ]);
+
+        return Inertia::render('Checkout', [
+            'clientes' => $users,
+        ]);
+    }
+
     public function index(Request $request): Response
     {
         $user = $request->user();
@@ -45,9 +62,14 @@ class OrderController extends Controller
         ]);
     }
 
-    public function store(OrderRequest $request)
+    public function store(Request $request)
     {
-        $validated = $request->validated();
+        $validated = $request->validate([
+            'cliente_id' => 'nullable|exists:usuarios,usu_id',
+            'items' => 'required|array|min:1',
+            'items.*.food_id' => 'required|exists:productos,pro_id',
+            'items.*.quantity' => 'required|integer|min:1',
+        ]);
 
         DB::transaction(function () use ($request, $validated) {
             $total = 0;
@@ -66,11 +88,14 @@ class OrderController extends Controller
                 ];
             }
 
+            // Si no se seleccionó cliente, usar el usuario autenticado
+            $userId = $validated['cliente_id'] ?? $request->user()->id;
+
             $order = Order::create([
-                'user_id' => $request->user()->id,
+                'user_id' => $userId,
                 'total' => $total,
-                'status' => 'pendiente',
-                'notes' => $validated['notes'] ?? null,
+                'status' => 'confirmado',
+                'notes' => null,
             ]);
 
             foreach ($orderItems as $orderItem) {

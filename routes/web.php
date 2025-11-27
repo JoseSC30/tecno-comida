@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\RecetaController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PagoFacilController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
 use App\Models\Rol;
@@ -21,6 +22,9 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+// Callback de PagoFácil (debe estar fuera de auth para recibir notificaciones)
+Route::post('pagofacil/callback', [PagoFacilController::class, 'callback'])->name('pagofacil.callback');
+
 // Rutas protegidas para usuarios autenticados
 Route::middleware(['auth'])->group(function () {
     
@@ -31,12 +35,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('menu', [MenuController::class, 'index'])->name('menu');
     
     // Checkout
-    Route::get('checkout', function () {
-        return Inertia::render('Checkout');
-    })->name('checkout');
+    Route::get('checkout', [OrderController::class, 'checkout'])->name('checkout');
     
     // Pedidos - todos pueden crear y ver sus pedidos
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'store']);
+
+    // PagoFácil - Rutas para pago QR
+    Route::prefix('pagofacil')->group(function () {
+        Route::post('generate-qr', [PagoFacilController::class, 'generateQr'])->name('pagofacil.generateQr');
+        Route::post('query-transaction', [PagoFacilController::class, 'queryTransaction'])->name('pagofacil.queryTransaction');
+        Route::post('callback-status', [PagoFacilController::class, 'getCallbackStatus'])->name('pagofacil.callbackStatus');
+        Route::post('transaction-data', [PagoFacilController::class, 'getTransactionData'])->name('pagofacil.transactionData');
+    });
 
     // Búsqueda global
     Route::get('search', SearchController::class)->name('search.global');

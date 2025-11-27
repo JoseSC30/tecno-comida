@@ -18,6 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
+        // Excluir la ruta de callback de PagoFácil de la verificación CSRF
+        $middleware->validateCsrfTokens(except: [
+            'pagofacil/callback',
+        ]);
+
         $middleware->web(
             prepend: [
                 TrackPageVisits::class,

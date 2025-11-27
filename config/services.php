@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'pagofacil' => [
+        'token' => env('PF_TOKEN_AUTHORIZATION'),
+        'url_base' => env('PF_URL_BASE'),
+        'callback_url' => env('PF_CALLBACK_URL'),
+    ],
+
 ];

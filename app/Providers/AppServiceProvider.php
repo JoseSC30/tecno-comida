@@ -28,7 +28,8 @@ class AppServiceProvider extends ServiceProvider
 
             URL::forceRootUrl($baseUrl ?: config('app.url'));
 
-            if ($request->isSecure()) {
+            // Forzar HTTPS cuando se usa ngrok o cuando la request es segura
+            if ($request->isSecure() || $request->header('x-forwarded-proto') === 'https') {
                 URL::forceScheme('https');
             }
         }
