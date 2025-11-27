@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, ShoppingBag, UtensilsCrossed, Users, Package, List, ArrowRightLeft } from 'lucide-vue-next';
+import { BookOpen, Folder, LayoutGrid, ShoppingBag, UtensilsCrossed, Users, Package, List, ArrowRightLeft, CalendarDays, ClipboardList } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { route } from 'ziggy-js';
 import AppLogo from './AppLogo.vue';
@@ -37,6 +37,16 @@ const mainNavItems = computed((): NavItem[] => {
             title: 'Mis Pedidos',
             href: route('orders.index'),
             icon: ShoppingBag,
+        },
+        {
+            title: 'Reservar Mesa',
+            href: route('reservas.index'),
+            icon: CalendarDays,
+        },
+        {
+            title: 'Mis Reservas',
+            href: route('reservas.list'),
+            icon: ClipboardList,
         },
     ];
 

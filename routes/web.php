@@ -9,6 +9,7 @@ use App\Http\Controllers\RecetaController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PagoFacilController;
+use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
 use App\Models\Rol;
@@ -39,6 +40,17 @@ Route::middleware(['auth'])->group(function () {
     
     // Pedidos - todos pueden crear y ver sus pedidos
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'store']);
+
+    // Reservas - Gestión de reservas de mesa
+    Route::prefix('reservas')->group(function () {
+        Route::get('/', [ReservaController::class, 'index'])->name('reservas.index');
+        Route::post('/availability', [ReservaController::class, 'getAvailability'])->name('reservas.availability');
+        Route::post('/store', [ReservaController::class, 'store'])->name('reservas.store');
+        Route::get('/list', [ReservaController::class, 'list'])->name('reservas.list');
+        Route::patch('/{reserva}/status', [ReservaController::class, 'updateStatus'])->name('reservas.updateStatus');
+        Route::delete('/{reserva}/cancel', [ReservaController::class, 'cancel'])->name('reservas.cancel');
+        Route::post('/{id}/pay-second-installment', [ReservaController::class, 'paySecondInstallment'])->name('reservas.paySecondInstallment');
+    });
 
     // PagoFácil - Rutas para pago QR
     Route::prefix('pagofacil')->group(function () {
