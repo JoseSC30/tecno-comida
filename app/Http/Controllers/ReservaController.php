@@ -133,12 +133,12 @@ class ReservaController extends Controller
         $numCuotas = $tipoPago === Reserva::TIPO_PAGO_CUOTAS ? 2 : 1;
         $montoCuota = $monto / $numCuotas;
 
-        // Calculate initial payment based on type
+        // Calculate initial payment based on type and method
         $montoPagado = 0;
         $cuotasPagadas = 0;
 
-        if ($validated['metodo_pago'] === 'qr') {
-            // QR payment - first installment is paid
+        // For installment payments, the first installment is always paid when creating
+        if ($tipoPago === Reserva::TIPO_PAGO_CUOTAS) {
             $montoPagado = $montoCuota;
             $cuotasPagadas = 1;
         }
@@ -149,10 +149,16 @@ class ReservaController extends Controller
                 $estado = Reserva::ESTADO_PAGADA;
                 $montoPagado = $monto; // Full amount paid
             } else {
-                $estado = Reserva::ESTADO_PARCIAL; // Only first installment paid
+                $estado = Reserva::ESTADO_PARCIAL; // Only first installment paid (QR)
             }
         } else {
-            $estado = Reserva::ESTADO_CONFIRMADA; // Cash payment - not paid yet
+            // Cash payment
+            if ($tipoPago === Reserva::TIPO_PAGO_COMPLETO) {
+                $estado = Reserva::ESTADO_PAGADA; // Full cash payment
+                $montoPagado = $monto;
+            } else {
+                $estado = Reserva::ESTADO_PARCIAL; // First installment paid in cash
+            }
         }
 
         $reserva = Reserva::create([

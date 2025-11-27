@@ -125,9 +125,12 @@ const cancelReservation = (id: number) => {
 
 // Helper to check if reservation has pending installment
 const hasPendingInstallment = (reserva: Reserva) => {
-    return reserva.estado === 'pagada_parcial' && 
-           reserva.tipo_pago === 'cuotas' && 
-           (reserva.cuotas_pagadas || 0) < (reserva.num_cuotas || 2);
+    // Check if it's a cuotas payment with pending installments
+    // Works for both pagada_parcial state and any cuotas payment not fully paid
+    return reserva.tipo_pago === 'cuotas' && 
+           (reserva.cuotas_pagadas || 0) < (reserva.num_cuotas || 2) &&
+           reserva.estado !== 'cancelada' &&
+           reserva.estado !== 'completada';
 };
 
 // Get pending amount
@@ -217,7 +220,7 @@ const confirmSecondInstallment = async () => {
     if (!payingReservaId.value || !qrData.value?.transaction_id) return;
 
     try {
-        const targetUrl = `/reservas/${payingReservaId.value}/pay-second-installment`;
+        const targetUrl = route('reservas.paySecondInstallment', payingReservaId.value);
         console.log('Sending to URL:', targetUrl);
         console.log('With transaction_id:', qrData.value.transaction_id);
 
@@ -255,7 +258,7 @@ const paySecondInstallmentCash = async (reserva: Reserva) => {
     if (!confirm('¿Confirmar pago en efectivo de la segunda cuota?')) return;
 
     try {
-        const response = await axios.post(`/reservas/${reserva.id}/pay-second-installment`, {
+        const response = await axios.post(route('reservas.paySecondInstallment', reserva.id), {
             transaction_id: 'EFECTIVO-' + Date.now(),
         });
 
