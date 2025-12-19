@@ -34,6 +34,13 @@ Route::middleware(['auth'])->group(function () {
     
     // Menú público para todos los usuarios autenticados
     Route::get('menu', [MenuController::class, 'index'])->name('menu');
+    Route::get('menu/combos', [MenuController::class, 'combos'])->name('menu.combos');
+    Route::middleware(['role:' . Rol::ADMIN . ',' . Rol::CAJERO . ',' . Rol::MESERO . ',' . Rol::COCINERO])
+        ->post('menu/combos', [MenuController::class, 'storeCombo'])->name('menu.combos.store');
+    Route::middleware(['role:' . Rol::ADMIN . ',' . Rol::CAJERO . ',' . Rol::MESERO . ',' . Rol::COCINERO])
+        ->put('menu/combos/{menu}', [MenuController::class, 'updateCombo'])->name('menu.combos.update');
+    Route::middleware(['role:' . Rol::ADMIN . ',' . Rol::CAJERO . ',' . Rol::MESERO . ',' . Rol::COCINERO])
+        ->delete('menu/combos/{menu}', [MenuController::class, 'destroyCombo'])->name('menu.combos.destroy');
     
     // Checkout - todos menos cocinero
     Route::middleware(['role:' . Rol::ADMIN . ',' . Rol::CAJERO . ',' . Rol::MESERO . ',' . Rol::CLIENTE])

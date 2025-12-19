@@ -46,22 +46,27 @@ const callbackData = ref<{
 } | null>(null);
 const checkingStatus = ref(false);
 
-// Polling automático
 let pollingInterval: ReturnType<typeof setInterval> | null = null;
 const pollingActive = ref(false);
 
 const form = useForm({
     cliente_id: null as number | null,
-    items: [] as Array<{ food_id: number; quantity: number; price: number }>,
+    items: [] as Array<{ type: 'product' | 'combo'; food_id?: number | null; menu_id?: number | null; quantity: number; components?: Array<{ product_id: number; quantity: number }> }>,
     metodo_pago: 'efectivo' as 'efectivo' | 'qr'
 });
 
+const mapCartItemsForOrder = () => {
+    return cartItems.value.flatMap(item => {
+        if (item.type === 'combo' && item.comboId) {
+            return [{ type: 'combo' as const, menu_id: item.comboId, quantity: item.quantity, components: item.components }];
+        }
+
+        return [{ type: 'product' as const, food_id: item.food_id, quantity: item.quantity }];
+    });
+};
+
 const submit = () => {
-    form.items = cartItems.value.map(item => ({
-        food_id: item.food_id,
-        quantity: item.quantity,
-        price: item.price
-    }));
+    form.items = mapCartItemsForOrder();
     form.metodo_pago = 'efectivo';
     
     form.post(route('orders.store'), {
@@ -71,7 +76,6 @@ const submit = () => {
     });
 };
 
-// Obtener nombre del cliente seleccionado o usuario autenticado
 const getClientName = (clienteId: number | null): string => {
     if (clienteId) {
         const cliente = props.clientes.find(c => c.id === clienteId);
@@ -128,16 +132,12 @@ const generateQr = async () => {
     stopPolling();
 
     try {
-        const response = await axios.post(route('pagofacil.generateQr'), {
-            client_id: qrClienteId.value || currentUser.value?.id,
-            client_name: getClientName(qrClienteId.value),
-            amount: total.value,
-            items: cartItems.value.map(item => ({
-                food_id: item.food_id,
-                quantity: item.quantity,
-                price: item.price
-            })),
-        });
+            const response = await axios.post(route('pagofacil.generateQr'), {
+                client_id: qrClienteId.value || currentUser.value?.id,
+                client_name: getClientName(qrClienteId.value),
+                amount: total.value,
+                items: mapCartItemsForOrder(),
+            });
 
         if (response.data.success) {
             qrData.value = response.data.data;
@@ -188,11 +188,7 @@ const checkPaymentStatus = async () => {
 // Confirmar pedido después del pago QR
 const confirmQrOrder = () => {
     form.cliente_id = qrClienteId.value;
-    form.items = cartItems.value.map(item => ({
-        food_id: item.food_id,
-        quantity: item.quantity,
-        price: item.price
-    }));
+    form.items = mapCartItemsForOrder();
     form.metodo_pago = 'qr';
     
     form.post(route('orders.store'), {

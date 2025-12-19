@@ -72,7 +72,7 @@ const checkout = () => {
                     <div class="space-y-4">
                         <div
                             v-for="item in cartItems"
-                            :key="item.food_id"
+                            :key="item.key"
                             class="flex gap-4 rounded-lg border border-gray-200 p-4 dark:border-gray-700"
                         >
                             <!-- Image -->
@@ -91,12 +91,37 @@ const checkout = () => {
 
                             <!-- Info -->
                             <div class="flex flex-1 flex-col">
-                                <h3 class="font-medium text-gray-900 dark:text-gray-100">
-                                    {{ item.name }}
-                                </h3>
-                                <p class="text-sm font-semibold text-orange-600" style="color: #ec1c24;">
-                                    Bs. {{ item.price }}
+                                <div class="flex items-center gap-2">
+                                    <h3 class="font-medium text-gray-900 dark:text-gray-100">
+                                        {{ item.name }}
+                                    </h3>
+                                    <span
+                                        v-if="item.type === 'combo'"
+                                        class="rounded-full bg-orange-100 px-2 py-0.5 text-xs font-semibold text-orange-700 dark:bg-orange-900/40 dark:text-orange-200"
+                                    >
+                                        Combo
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm">
+                                    <p
+                                        v-if="item.originalPrice && item.discount"
+                                        class="text-gray-500 line-through"
+                                    >
+                                        Bs. {{ item.originalPrice }}
+                                    </p>
+                                    <p class="text-sm font-semibold text-orange-600" style="color: #ec1c24;">
+                                        Bs. {{ item.price }}
+                                    </p>
+                                </div>
+                                <p v-if="item.discount" class="text-xs text-gray-500">
+                                    Descuento aplicado: {{ item.discount }}%
                                 </p>
+                                <div v-if="item.type === 'combo' && item.products?.length" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                    Incluye:
+                                    <span v-for="(prod, idx) in item.products" :key="prod.id">
+                                        {{ prod.name }}<span v-if="prod.quantity"> (x{{ prod.quantity }})</span><span v-if="idx < item.products.length - 1">, </span>
+                                    </span>
+                                </div>
 
                                 <!-- Quantity Controls -->
                                 <div class="mt-2 flex items-center gap-2">
@@ -104,7 +129,7 @@ const checkout = () => {
                                         variant="outline"
                                         size="sm"
                                         class="h-8 w-8 p-0"
-                                        @click="decrementQuantity(item.food_id)"
+                                        @click="decrementQuantity(item.key)"
                                     >
                                         <Minus class="h-3 w-3" />
                                     </Button>
@@ -113,7 +138,7 @@ const checkout = () => {
                                         variant="outline"
                                         size="sm"
                                         class="h-8 w-8 p-0"
-                                        @click="incrementQuantity(item.food_id)"
+                                        @click="incrementQuantity(item.key)"
                                     >
                                         <Plus class="h-3 w-3" />
                                     </Button>
@@ -121,7 +146,7 @@ const checkout = () => {
                                         variant="ghost"
                                         size="sm"
                                         class="ml-auto"
-                                        @click="removeFromCart(item.food_id)"
+                                        @click="removeFromCart(item.key)"
                                     >
                                         <Trash2 class="h-4 w-4 text-red-600" />
                                     </Button>

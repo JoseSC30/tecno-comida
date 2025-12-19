@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import { useCart } from '@/composables/useCart';
 import CartSidebar from '@/components/CartSidebar.vue';
@@ -62,7 +62,7 @@ const breadcrumbs = [
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-6">
             <!-- Header con botón de carrito -->
-            <div class="mb-6 flex items-start justify-between">
+            <div class="mb-6 flex items-start justify-between gap-3">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
                         Menú de Comidas
@@ -71,20 +71,27 @@ const breadcrumbs = [
                         Explora nuestro delicioso menú
                     </p>
                 </div>
-                <Button 
-                    size="lg" 
-                    class="relative"
-                    @click="openCart"
-                >
-                    <ShoppingCart class="mr-2 h-5 w-5" />
-                    Ver Carrito
-                    <span 
-                        v-if="itemCount > 0"
-                        class="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white"
+                <div class="flex items-center gap-2">
+                    <Link :href="route('menu.combos')">
+                        <Button variant="outline" size="lg" class="whitespace-nowrap">
+                            Combos
+                        </Button>
+                    </Link>
+                    <Button 
+                        size="lg" 
+                        class="relative"
+                        @click="openCart"
                     >
-                        {{ itemCount }}
-                    </span>
-                </Button>
+                        <ShoppingCart class="mr-2 h-5 w-5" />
+                        Ver Carrito
+                        <span 
+                            v-if="itemCount > 0"
+                            class="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white"
+                        >
+                            {{ itemCount }}
+                        </span>
+                    </Button>
+                </div>
             </div>
 
             <!-- Categorías -->
