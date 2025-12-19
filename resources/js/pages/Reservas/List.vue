@@ -14,7 +14,8 @@ import {
     QrCode,
     Loader2,
     CreditCard,
-    Banknote
+    Banknote,
+    FileDown
 } from 'lucide-vue-next';
 import { route } from 'ziggy-js';
 import { ref } from 'vue';
@@ -299,12 +300,20 @@ const breadcrumbs = [
                             </p>
                         </div>
                     </div>
-                    <a :href="route('reservas.index')">
-                        <Button>
-                            <Plus class="mr-2 h-4 w-4" />
-                            Nueva Reserva
+                    <div class="flex items-center gap-2">
+                        <Button as-child variant="outline">
+                            <a :href="route('reservas.reporte')" target="_blank" rel="noopener">
+                                <FileDown class="mr-2 h-4 w-4" />
+                                Generar reporte
+                            </a>
                         </Button>
-                    </a>
+                        <a :href="route('reservas.index')">
+                            <Button>
+                                <Plus class="mr-2 h-4 w-4" />
+                                Nueva Reserva
+                            </Button>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Lista de reservas -->

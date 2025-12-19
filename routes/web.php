@@ -58,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/availability', [ReservaController::class, 'getAvailability'])->name('reservas.availability');
             Route::post('/store', [ReservaController::class, 'store'])->name('reservas.store');
             Route::get('/list', [ReservaController::class, 'list'])->name('reservas.list');
+            Route::get('/reporte', [ReservaController::class, 'reporte'])->name('reservas.reporte');
             Route::patch('/{reserva}/status', [ReservaController::class, 'updateStatus'])->name('reservas.updateStatus');
             Route::delete('/{reserva}/cancel', [ReservaController::class, 'cancel'])->name('reservas.cancel');
             Route::post('/{id}/pay-second-installment', [ReservaController::class, 'paySecondInstallment'])->name('reservas.paySecondInstallment');
@@ -82,6 +83,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('productos', ProductoController::class);
         Route::resource('categorias', CategoriaController::class);
         Route::resource('insumos', InsumoController::class);
+        Route::get('movimientos/reporte', [MovimientoController::class, 'reporte'])->name('movimientos.reporte');
         Route::resource('movimientos', MovimientoController::class)->only(['index', 'create', 'store']);
         Route::get('productos/{producto}/receta', [RecetaController::class, 'edit'])->name('recetas.edit');
         Route::put('productos/{producto}/receta', [RecetaController::class, 'update'])->name('recetas.update');

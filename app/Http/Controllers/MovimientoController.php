@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\RedirectResponse;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MovimientoController extends Controller
 {
@@ -31,6 +32,29 @@ class MovimientoController extends Controller
         return Inertia::render('Movimientos/Index', [
             'movimientos' => $movimientos,
         ]);
+    }
+
+    public function reporte()
+    {
+        $movimientos = Movimiento::with('insumo')
+            ->orderBy('mov_fecha', 'desc')
+            ->get()
+            ->map(function ($movimiento) {
+                return [
+                    'fecha' => $movimiento->fecha->format('d/m/Y H:i'),
+                    'insumo' => $movimiento->insumo->name,
+                    'tipo' => ucfirst($movimiento->tipo),
+                    'cantidad' => $movimiento->cantidad,
+                    'unidad' => $movimiento->unidad,
+                ];
+            });
+
+        $pdf = Pdf::loadView('reports.movimientos', [
+            'movimientos' => $movimientos,
+            'generatedAt' => now()->format('d/m/Y H:i'),
+        ]);
+
+        return $pdf->download('movimientos.pdf');
     }
 
     public function create(): Response

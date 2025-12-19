@@ -2,7 +2,7 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Button } from '@/components/ui/button';
 import { Head, Link } from '@inertiajs/vue3';
-import { Plus } from 'lucide-vue-next';
+import { FileDown, Plus } from 'lucide-vue-next';
 import { route } from 'ziggy-js';
 
 const props = defineProps<{
@@ -38,12 +38,20 @@ const getTipoBadgeClass = (tipo: string) => {
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">
                     Movimientos de Inventario
                 </h1>
-                <Button as-child>
-                    <Link :href="route('movimientos.create')">
-                        <Plus class="mr-2 h-4 w-4" />
-                        Registrar Movimiento
-                    </Link>
-                </Button>
+                <div class="flex items-center gap-2">
+                    <Button as-child variant="outline">
+                        <a :href="route('movimientos.reporte')" target="_blank" rel="noopener">
+                            <FileDown class="mr-2 h-4 w-4" />
+                            Generar reporte
+                        </a>
+                    </Button>
+                    <Button as-child>
+                        <Link :href="route('movimientos.create')">
+                            <Plus class="mr-2 h-4 w-4" />
+                            Registrar Movimiento
+                        </Link>
+                    </Button>
+                </div>
             </div>
 
             <div class="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800">

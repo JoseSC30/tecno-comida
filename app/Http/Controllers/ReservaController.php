@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReservaController extends Controller
 {
@@ -299,6 +300,45 @@ class ReservaController extends Controller
         return Inertia::render('Reservas/List', [
             'reservas' => $reservas,
         ]);
+    }
+
+    public function reporte(Request $request)
+    {
+        $user = $request->user();
+
+        $query = Reserva::with(['usuario', 'mesa']);
+
+        if ($user->isCliente()) {
+            $query->where('usu_id', $user->id);
+        }
+
+        $reservas = $query->orderBy('res_fecha', 'desc')
+            ->orderBy('res_hora', 'desc')
+            ->get()
+            ->map(function ($reserva) {
+                return [
+                    'fecha' => $reserva->res_fecha?->format('d/m/Y'),
+                    'hora' => substr($reserva->res_hora ?? '', 0, 5),
+                    'cliente' => $reserva->usuario?->full_name ?? 'Sin cliente',
+                    'mesa' => $reserva->mesa?->mes_numero ? 'Mesa #' . $reserva->mesa->mes_numero : 'Sin mesa',
+                    'capacidad' => $reserva->mesa?->mes_capacidad ?? '-',
+                    'estado' => ucfirst(str_replace('_', ' ', $reserva->res_estado)),
+                    'personas' => $reserva->res_personas,
+                    'monto' => number_format((float) $reserva->res_monto, 2),
+                    'monto_pagado' => number_format((float) $reserva->res_monto_pagado, 2),
+                    'tipo_pago' => $reserva->res_tipo_pago === Reserva::TIPO_PAGO_CUOTAS
+                        ? 'Cuotas (' . $reserva->res_cuotas_pagadas . '/' . $reserva->res_num_cuotas . ')'
+                        : 'Completo',
+                    'notas' => $reserva->res_notas,
+                ];
+            });
+
+        $pdf = Pdf::loadView('reports.reservas', [
+            'reservas' => $reservas,
+            'generatedAt' => now()->format('d/m/Y H:i'),
+        ]);
+
+        return $pdf->download('reservas.pdf');
     }
 
     /**
